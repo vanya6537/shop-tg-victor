@@ -4,7 +4,7 @@ require('dotenv').config();
 // Загружаем переменные окружения из .env файла
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const WEBAPP_URL = process.env.WEBAPP_URL || 'https://science-show.example.com';
-const ORDERS_CHANNEL_ID = -1003551646271; // ID канала для заказов
+const ORDERS_CHANNEL_ID = -5010977237; // ID канала для заказов
 
 // Проверяем наличие BOT_TOKEN
 if (!BOT_TOKEN) {
@@ -53,7 +53,7 @@ const logMessage = (msg) => {
   }
 };
 
-console.log('🤖 Wellness Shop Bot запущен...');
+console.log('🤖 Flow Hammer Shop Bot запущен...');
 
 // Получаем информацию о боте
 bot.getMe().then((me) => {
@@ -79,36 +79,50 @@ bot.on('message', async (msg) => {
       const data = JSON.parse(msg.web_app_data.data);
       console.log('📦 Распарсенные данные:', JSON.stringify(data, null, 2));
       
-      const { name, email, date, guests, message: bookingMessage, timestamp } = data;
+      // Извлекаем данные из структуры order_v1
+      const customer = data.customer || {};
+      const cart = data.cart || {};
+      const items = cart.items || [];
       const userId = msg.from.id;
       const username = msg.from.username || `${msg.from.first_name} ${msg.from.last_name}`.trim();
+      const timestamp = data.timestamp;
       
       console.log('\n✉️ ПОЛУЧЕНЫ ДАННЫЕ ЗАКАЗА ИЗ ВЕБ-ПРИЛОЖЕНИЯ');
       console.log('─'.repeat(60));
-      console.log('👤 Заказчик:', name);
-      console.log('📧 Email:', email);
-      console.log('📅 Дата:', date);
-      console.log('👥 Гостей:', guests);
-      console.log('📝 Сообщение:', bookingMessage || '(не указано)');
+      console.log('👤 Заказчик:', customer.name);
+      console.log('📞 Контакт:', customer.contact);
+      console.log('📝 Примечание:', customer.note);
+      console.log('🛒 Товаров в заказе:', items.length);
+      console.log('💰 Сумма:', cart.subtotal, cart.currency);
       console.log('🕐 Время отправки:', timestamp);
       
+      // Форматируем товары в красивый список
+      let itemsList = '';
+      items.forEach((item, idx) => {
+        itemsList += `${idx + 1}. *${item.title}*\n`;
+        itemsList += `   Количество: ${item.qty}\n`;
+        itemsList += `   Цена: $${item.lineTotal}\n\n`;
+      });
+      
       // Форматируем красивое сообщение для канала заказов
-      const orderMessage = `🎪 *НОВЫЙ ЗАКАЗ!*
+      const orderMessage = `🛍️ *НОВЫЙ ЗАКАЗ!*
 
 📝 *Данные заказчика:*
-👤 Имя: ${name}
-📧 Email: ${email}
+👤 Имя: ${customer.name || 'не указано'}
+📞 Контакт: ${customer.contact || 'не указано'}
 👥 Telegram: @${username} (ID: ${userId})
 
-📅 *Детали заказа:*
-📆 Дата мероприятия: ${date}
-👥 Количество гостей: ${guests}
-📋 Описание события: ${bookingMessage || 'не указано'}
+📦 *Товары в заказе:*
+${itemsList}
+💰 *Итого: $${cart.subtotal} ${cart.currency}*
 
-⏰ Время подачи заказа: ${new Date().toLocaleString('ru-RU')}
+📋 *Примечание:*
+${customer.note || 'не указано'}
+
+⏰ Время подачи заказа: ${new Date(timestamp).toLocaleString('ru-RU')}
 
 ─────────────────────────────────
-⚠️ Требуется подтверждение от администратора`;
+✅ Заказ готов к обработке`;
       
       // Отправляем в канал заказов
       await bot.sendMessage(ORDERS_CHANNEL_ID, orderMessage, { parse_mode: 'Markdown' });
@@ -116,10 +130,10 @@ bot.on('message', async (msg) => {
       
       // Отправляем подтверждение юзеру в личку
       await bot.sendMessage(msg.chat.id, 
-        `✅ *Спасибо за заказ, ${name}!*\n\n` +
-        `Мы получили ваш заказ на дату *${date}*\n` +
-        `Количество гостей: *${guests}*\n\n` +
-        `Мы скоро свяжемся с вами по email: ${email}\n\n` +
+        `✅ *Спасибо за заказ, ${customer.name || 'друже'}!*\n\n` +
+        `Мы получили ваш заказ на сумму *$${cart.subtotal} ${cart.currency}*\n\n` +
+        `📦 *Товары:*\n${itemsList}\n` +
+        `Мы свяжемся с вами по номеру *${customer.contact}* в течение часа\n\n` +
         `Номер заказа: \`ORDER_${msg.message_id}\``,
         { parse_mode: 'Markdown' }
       );
@@ -177,7 +191,7 @@ bot.onText(/\/start/, (msg) => {
         [
           {
             text: '🛍️ Товары',
-            callback_data: 'shows_info'
+            callback_data: 'products_list'
           },
           {
             text: '💬 Контакты',
@@ -190,7 +204,7 @@ bot.onText(/\/start/, (msg) => {
 
   // Отправляем основное сообщение с inline кнопками
   bot.sendMessage(chatId, 
-    '🛍️ *WELLNESS SHOP DA NANG*\n\n' +
+    '🛍️ *FLOW HAMMER SHOP DA NANG*\n\n' +
     '✨ Профессиональные массажные палки & фирменный нашлемник\n' +
     '💪 Для спортсменов, йогов, водителей — для вас!\n\n' +
     '⭐ *Трендовое качество, реальные результаты.*\n\n' +
@@ -267,6 +281,25 @@ bot.onText(/\/products/, (msg) => {
   };
 
   bot.sendMessage(chatId, productsMessage, { parse_mode: 'Markdown', ...keyboard });
+  
+  // Send helmet cover image - try with a simpler approach
+  console.log('📸 Отправляю фото товара...');
+  try {
+    // Using a working public image URL https://i.ibb.co/mrBvbTL5/2026-01-23-03-55-03.jpg
+    const helmetImageUrl = 'https://i.ibb.co/mrBvbTL5/2026-01-23-03-55-03.jpg';
+    bot.sendPhoto(chatId, helmetImageUrl, {
+      caption: '🧸 *Character Helmet Cover - Стиль & Защита*\n💙 Милый дизайн | ✨ Высокое качество\n🏍️ Для мотоциклистов | 💰 8.99$',
+      parse_mode: 'Markdown'
+    }).then(msg => {
+      console.log('✅ Фото отправлено (ID: ' + msg.photo[0].file_id + ')');
+    }).catch(err => {
+      console.error('❌ Ошибка фото:', err.message);
+      // Fallback: send text description if photo fails
+      bot.sendMessage(chatId, '🧸 *Character Helmet Cover*\n💙 Милый дизайн full-face шлема\n💰 Цена: 8.99$', { parse_mode: 'Markdown' });
+    });
+  } catch (e) {
+    console.error('❌ Exception:', e.message);
+  }
 });
 
 // Команда /trust - доверие и маркетинг
@@ -330,9 +363,9 @@ bot.onText(/\/book/, (msg) => {
 bot.onText(/\/contact/, (msg) => {
   const chatId = msg.chat.id;
   bot.sendMessage(chatId,
-    '� *КОНТАКТЫ WELLNESS SHOP*\n\n' +
+    '💎 *КОНТАКТЫ FLOW HAMMER SHOP*\n\n' +
     '━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' +
-    '👤 *Wellness Shop Da Nang*\n' +
+    '👤 *Flow Hammer Shop Da Nang*\n' +
     '🛍️ Массажные палки & Нашлемники\n\n' +
     '📧 *Email:*\n' +
     '`wellness.shop.dn@gmail.com`\n\n' +
@@ -396,7 +429,7 @@ bot.onText(/\/status/, (msg) => {
   const chatId = msg.chat.id;
   const isAdmin = msg.from.id === 0; // Замени на реальный ID админа если нужно
   
-  let status = `🤖 *Статус Wellness Shop Bot*\n\n`;
+  let status = `🤖 *Статус Flow Hammer Shop Bot*\n\n`;
   status += `📊 Всего логов в памяти: ${messageLogs.length}\n`;
   status += `💬 Тип текущего чата: ${msg.chat.type}\n`;
   status += `📍 Chat ID: ${msg.chat.id}\n\n`;
@@ -428,6 +461,72 @@ bot.on('callback_query', (query) => {
   console.log('─'.repeat(60));
   
   switch(query.data) {
+    case 'products_list':
+      console.log('✅ Обработка: products_list');
+      bot.answerCallbackQuery(query.id);
+      
+      // Send the same products message as /products command
+      const productsMessage = 
+        '🛍️ *ТРИ ЗВЕЗДЫ НАШЕГО МАГАЗИНА*\n\n' +
+        '━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' +
+        '🧊 *КОМПАКТНАЯ: Mini Pocket (12.99$)*\n' +
+        '📏 Длина: 10 см — в сумку, в карман\n' +
+        '✨ Идеальна для: офиса, путешествий, быстрых сессий\n' +
+        '💪 Материал: пластик ABS + силикон\n' +
+        '⭐ Техника: удобная в ладони\n\n' +
+        '💆 *СРЕДНЯЯ: Therapy Ergonomic (24.99$)*\n' +
+        '📏 Длина: 30 см — универсальная\n' +
+        '✨ Идеальна для: дома, спортзала, повседневного использования\n' +
+        '💪 Материал: гибкий корпус + мягкий наконечник\n' +
+        '⭐ Техника: точное попадание в триггер-точки\n\n' +
+        '🥇 *ПРОФЕССИОНАЛЬНАЯ: Acupressure Pro (19.99$)*\n' +
+        '📏 Длина: 45 см — для серьёзной работы\n' +
+        '✨ Идеальна для: глубокого массажа, спины, ног\n' +
+        '💪 Материал: хардкорный ABS + жёсткий силикон\n' +
+        '⭐ Техника: традиционная акупрессура\n\n' +
+        '━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' +
+        '🎯 *ПЛЮС: Character Helmet Cover (8.99$)*\n' +
+        '😊 Милый дизайн full-face для мотоциклистов\n' +
+        '🛡️ Защита шлема + стиль на фото\n\n' +
+        '━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' +
+        '✅ *3000+ довольных клиентов*\n' +
+        '✅ Гарантия качества 30 дней\n' +
+        '✅ Бесплатная доставка на первый заказ\n\n' +
+        'Нажми кнопку ниже чтобы добавить в корзину!';
+      
+      const keyboard = {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: '🛒 Открыть магазин',
+                web_app: { url: `${WEBAPP_URL}#products` }
+              }
+            ]
+          ]
+        }
+      };
+
+      console.log('📤 Отправляю товары...');
+      bot.sendMessage(chatId, productsMessage, { parse_mode: 'Markdown', ...keyboard });
+      
+      // Send helmet cover image
+      console.log('📸 Отправляю фото товара...');
+      try {
+        const helmetImageUrl = 'https://picsum.photos/400/400?random=' + Date.now();
+        bot.sendPhoto(chatId, helmetImageUrl, {
+          caption: '🧸 *Character Helmet Cover - Стиль & Защита*\n💙 Милый дизайн | ✨ Высокое качество\n🏍️ Для мотоциклистов | 💰 8.99$',
+          parse_mode: 'Markdown'
+        }).then(msg => {
+          console.log('✅ Фото отправлено (ID: ' + msg.photo[0].file_id + ')');
+        }).catch(err => {
+          console.error('❌ Ошибка фото:', err.message);
+        });
+      } catch (e) {
+        console.error('❌ Exception:', e.message);
+      }
+      break;
+      
     case 'shows_info':
       console.log('✅ Обработка: shows_info');
       bot.answerCallbackQuery(query.id);
@@ -456,9 +555,9 @@ bot.on('callback_query', (query) => {
       console.log('📤 Отправляю контактную информацию...');
       bot.sendMessage(
         chatId,
-        '� *КОНТАКТЫ WELLNESS SHOP*\n\n' +
+        '💎 *КОНТАКТЫ FLOW HAMMER SHOP*\n\n' +
         '━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' +
-        '👤 *Wellness Shop Da Nang*\n' +
+        '👤 *Flow Hammer Shop Da Nang*\n' +
         '🛍️ Лучшие массажные палки Вьетнама\n\n' +
         '📧 *Email:*\n' +
         '`wellness.shop.dn@gmail.com`\n\n' +
@@ -509,7 +608,7 @@ bot.on('callback_query', (query) => {
         }
       };
       bot.sendMessage(chatId, 
-        '💎 *WELLNESS SHOP DA NANG*\n\n' +
+        '💎 *FLOW HAMMER SHOP DA NANG*\n\n' +
         'Профессиональные массажные палки + Фирменный нашлемник\n\n' +
         '✨ 3 хедлайнера по длине (10см, 30см, 45см)\n' +
         '💪 Для спортсменов, йогов, путешественников\n' +

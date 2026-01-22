@@ -1,12 +1,20 @@
 const svgToDataUri = (svg: string) => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 
+import { getHelmetCoverImage } from './helmet-image';
+
 export const generateProductImage = (opts: {
   title: string;
   subtitle: string;
   emoji: string;
   accent: string;
+  productId?: string;
 }): string => {
-  const { title, subtitle, emoji, accent } = opts;
+  const { title, subtitle, emoji, accent, productId } = opts;
+
+  // Use special image for helmet cover
+  if (productId === 'helmet-cover-style') {
+    return getHelmetCoverImage();
+  }
 
   const svg = `
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">

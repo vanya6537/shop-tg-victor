@@ -29,6 +29,7 @@ export const ProductDetailsModal = ({
       subtitle: t(product.shortDescKey),
       emoji: product.emoji,
       accent: product.accent,
+      productId: product.id,
     });
   }, [product, t]);
 

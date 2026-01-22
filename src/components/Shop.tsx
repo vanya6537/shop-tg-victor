@@ -141,6 +141,7 @@ export const Shop = () => {
               subtitle: t(p.shortDescKey),
               emoji: p.emoji,
               accent: p.accent,
+              productId: p.id,
             });
 
             return (

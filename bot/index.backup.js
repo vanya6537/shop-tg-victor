@@ -5,7 +5,7 @@ require('dotenv').config();
 // Загружаем переменные окружения из .env файла
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const WEBAPP_URL = process.env.WEBAPP_URL || 'https://science-show.example.com';
-const ORDERS_CHANNEL_ID = -1003551646271; // ID канала для заказов
+const ORDERS_CHANNEL_ID = -5010977237; // ID канала для заказов
 
 // Проверяем наличие BOT_TOKEN
 if (!BOT_TOKEN) {

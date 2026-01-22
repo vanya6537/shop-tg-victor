@@ -138,6 +138,7 @@ export const CartDrawer = ({
                       subtitle: t(product.shortDescKey),
                       emoji: product.emoji,
                       accent: product.accent,
+                      productId: product.id,
                     });
 
                     return (
