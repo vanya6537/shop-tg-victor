@@ -1,11 +1,16 @@
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 const { t, getUserLanguage } = require('./i18n');
+const { getLanguageForUser, setUserLanguage } = require('./user-languages');
+const { createOrder, getAllOrders, getOrderById, getOrderByNumber, getUserOrders, updateOrderStatus, getStatusLabel } = require('./database');
+const { isAdmin, registerAdminId, getAdminInfo } = require('./admin-config');
+const { getDashboardStats, formatStatsMessage, exportOrdersToCSV, getCustomerDetails } = require('./admin-utils');
 
 // Загружаем переменные окружения из .env файла
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const WEBAPP_URL = process.env.WEBAPP_URL || 'https://science-show.example.com';
 const ORDERS_CHANNEL_ID = -5010977237; // ID канала для заказов
+const ADMIN_IDS = (process.env.ADMIN_IDS || '').split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id)) || [];
 
 // Проверяем наличие BOT_TOKEN
 if (!BOT_TOKEN) {
@@ -87,6 +92,7 @@ bot.on('message', async (msg) => {
       const userId = msg.from.id;
       const username = msg.from.username || `${msg.from.first_name} ${msg.from.last_name}`.trim();
       const timestamp = data.timestamp;
+      const lang = getUserLanguage(msg.from);
       
       console.log('\n✉️ ПОЛУЧЕНЫ ДАННЫЕ ЗАКАЗА ИЗ ВЕБ-ПРИЛОЖЕНИЯ');
       console.log('─'.repeat(60));
@@ -97,6 +103,20 @@ bot.on('message', async (msg) => {
       console.log('💰 Сумма:', cart.subtotal, cart.currency);
       console.log('🕐 Время отправки:', timestamp);
       
+      // Сохраняем заказ в БД
+      const orderResult = await createOrder({
+        userId: userId,
+        username: username,
+        customerName: customer.name,
+        customerContact: customer.contact,
+        customerNote: customer.note,
+        items: items,
+        subtotal: cart.subtotal,
+        currency: cart.currency
+      });
+      
+      console.log(`✅ Заказ сохранён в БД: ${orderResult.orderNumber} (ID: ${orderResult.id})`);
+      
       // Форматируем товары в красивый список
       let itemsList = '';
       items.forEach((item, idx) => {
@@ -105,40 +125,39 @@ bot.on('message', async (msg) => {
         itemsList += `   Цена: $${item.lineTotal}\n\n`;
       });
       
-      // Форматируем красивое сообщение для канала заказов
-      const orderMessage = `🛍️ *НОВЫЙ ЗАКАЗ!*
-
-📝 *Данные заказчика:*
-👤 Имя: ${customer.name || 'не указано'}
-📞 Контакт: ${customer.contact || 'не указано'}
-👥 Telegram: @${username} (ID: ${userId})
-
-📦 *Товары в заказе:*
-${itemsList}
-💰 *Итого: $${cart.subtotal} ${cart.currency}*
-
-📋 *Примечание:*
-${customer.note || 'не указано'}
-
-⏰ Время подачи заказа: ${new Date(timestamp).toLocaleString('ru-RU')}
-
-─────────────────────────────────
-✅ Заказ готов к обработке`;
-      
-      // Отправляем в канал заказов
-      await bot.sendMessage(ORDERS_CHANNEL_ID, orderMessage, { parse_mode: 'Markdown' });
-      console.log(`✅ Заказ отправлен в канал ${ORDERS_CHANNEL_ID}`);
-      
       // Отправляем подтверждение юзеру в личку
       await bot.sendMessage(msg.chat.id, 
         `✅ *Спасибо за заказ, ${customer.name || 'друже'}!*\n\n` +
         `Мы получили ваш заказ на сумму *$${cart.subtotal} ${cart.currency}*\n\n` +
         `📦 *Товары:*\n${itemsList}\n` +
         `Мы свяжемся с вами по номеру *${customer.contact}* в течение часа\n\n` +
-        `Номер заказа: \`ORDER_${msg.message_id}\``,
+        `📌 Номер заказа: \`${orderResult.orderNumber}\`\n` +
+        `❓ Чтобы проверить статус, используй: /my-orders`,
         { parse_mode: 'Markdown' }
       );
       console.log(`✅ Подтверждение отправлено пользователю ${username}`);
+      
+      // Уведомляем администраторов
+      const adminMessage = `🛍️ *НОВЫЙ ЗАКАЗ!*\n\n` +
+        `📌 Номер: \`${orderResult.orderNumber}\`\n` +
+        `👤 Имя: ${customer.name || 'не указано'}\n` +
+        `📞 Контакт: ${customer.contact || 'не указано'}\n` +
+        `👥 Telegram: @${username} (ID: ${userId})\n\n` +
+        `📦 *Товары:*\n${itemsList}\n` +
+        `💰 *Итого: $${cart.subtotal} ${cart.currency}*\n\n` +
+        `📋 *Примечание:* ${customer.note || 'не указано'}\n\n` +
+        `⏰ Время: ${new Date(timestamp).toLocaleString('ru-RU')}\n` +
+        `📊 Статус: ⏳ Pending\n\n` +
+        `Используй /orders чтобы управлять заказами`;
+      
+      for (const adminId of ADMIN_IDS) {
+        try {
+          await bot.sendMessage(adminId, adminMessage, { parse_mode: 'Markdown' });
+        } catch (err) {
+          console.error(`⚠️ Не удалось отправить уведомление админу ${adminId}:`, err.message);
+        }
+      }
+      
       console.log('─'.repeat(60));
       return; // Не логируем web_app_data как обычное сообщение
     } catch (error) {
@@ -166,7 +185,20 @@ bot.on('channel_post', (msg) => {
 // Команда /start - смешанное меню (ReplyKeyboard + Inline)
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
-  const lang = getUserLanguage(msg.from);
+  const lang = getLanguageForUser(msg.from);
+  
+  // Кнопки выбора языка
+  const languageKeyboard = {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: '🇷🇺 Русский', callback_data: 'lang_ru' },
+          { text: '🇬🇧 English', callback_data: 'lang_en' },
+          { text: '🇻🇳 Tiếng Việt', callback_data: 'lang_vi' }
+        ]
+      ]
+    }
+  };
   
   // Сначала отправляем ReplyKeyboard с web_app кнопками
   const replyKeyboard = {
@@ -203,6 +235,14 @@ bot.onText(/\/start/, (msg) => {
       ]
     }
   };
+
+  // Отправляем выбор языка первым
+  bot.sendMessage(chatId, 
+    (lang === 'ru' ? '🌐 *Выберите язык / Chọn ngôn ngữ / Select language*' : 
+     lang === 'vi' ? '🌐 *Chọn ngôn ngữ / Выберите язык / Select language*' : 
+     '🌐 *Select language / Выберите язык / Chọn ngôn ngữ*'), 
+    languageKeyboard
+  );
 
   // Отправляем основное сообщение с inline кнопками
   bot.sendMessage(chatId, 
@@ -459,6 +499,38 @@ bot.on('callback_query', (query) => {
   console.log(`🔘 Кнопка (callback_data): ${query.data}`);
   console.log('─'.repeat(60));
   
+  // Обработка выбора языка
+  if (query.data === 'lang_ru') {
+    setUserLanguage(userId, 'ru');
+    bot.answerCallbackQuery(query.id, { text: '✅ Язык: Русский', show_alert: true });
+    bot.editMessageText('🌐 ✅ *Язык установлен: Русский (РУ)*', {
+      chat_id: chatId,
+      message_id: query.message.message_id,
+      parse_mode: 'Markdown'
+    });
+    return;
+  }
+  if (query.data === 'lang_en') {
+    setUserLanguage(userId, 'en');
+    bot.answerCallbackQuery(query.id, { text: '✅ Language: English', show_alert: true });
+    bot.editMessageText('🌐 ✅ *Language: English (EN)*', {
+      chat_id: chatId,
+      message_id: query.message.message_id,
+      parse_mode: 'Markdown'
+    });
+    return;
+  }
+  if (query.data === 'lang_vi') {
+    setUserLanguage(userId, 'vi');
+    bot.answerCallbackQuery(query.id, { text: '✅ Ngôn ngữ: Tiếng Việt', show_alert: true });
+    bot.editMessageText('🌐 ✅ *Ngôn ngữ: Tiếng Việt (VI)*', {
+      chat_id: chatId,
+      message_id: query.message.message_id,
+      parse_mode: 'Markdown'
+    });
+    return;
+  }
+  
   switch(query.data) {
     case 'products_list':
       console.log('✅ Обработка: products_list');
@@ -627,6 +699,626 @@ bot.on('callback_query', (query) => {
       console.log(`⚠️ Неизвестная кнопка: ${query.data}`);
       bot.answerCallbackQuery(query.id, { text: '⚠️ Неизвестная команда' });
       break;
+  }
+});
+
+// ========== ADMIN COMMANDS ==========
+
+// Команда /orders - список всех заказов для администраторов
+bot.onText(/\/orders/, async (msg) => {
+  const chatId = msg.chat.id;
+  
+  // Проверяем, администратор ли пользователь
+  if (!ADMIN_IDS.includes(msg.from.id)) {
+    await bot.sendMessage(chatId, '❌ У вас нет доступа к этой команде');
+    return;
+  }
+  
+  try {
+    const orders = await getAllOrders();
+    
+    if (orders.length === 0) {
+      await bot.sendMessage(chatId, '📭 Нет заказов в базе данных');
+      return;
+    }
+    
+    // Группируем заказы по статусам
+    const ordersByStatus = {
+      pending: [],
+      confirmed: [],
+      processing: [],
+      shipped: [],
+      delivered: [],
+      cancelled: []
+    };
+    
+    orders.forEach(order => {
+      if (ordersByStatus[order.status]) {
+        ordersByStatus[order.status].push(order);
+      }
+    });
+    
+    // Формируем сообщение с заказами
+    let message = `📊 *СТАТИСТИКА ЗАКАЗОВ* (всего: ${orders.length})\n\n`;
+    
+    const statusEmojis = {
+      pending: '⏳',
+      confirmed: '✅',
+      processing: '⚙️',
+      shipped: '📦',
+      delivered: '🎉',
+      cancelled: '❌'
+    };
+    
+    const statusLabels = {
+      pending: 'Ожидание',
+      confirmed: 'Подтвержден',
+      processing: 'Обработка',
+      shipped: 'Отправлен',
+      delivered: 'Доставлен',
+      cancelled: 'Отменен'
+    };
+    
+    for (const [status, statusOrders] of Object.entries(ordersByStatus)) {
+      if (statusOrders.length > 0) {
+        message += `${statusEmojis[status]} *${statusLabels[status]}* (${statusOrders.length})\n`;
+        statusOrders.forEach((order, idx) => {
+          message += `  ${idx + 1}. #${order.order_number} - ${order.customer_name} - $${order.subtotal}\n`;
+        });
+        message += '\n';
+      }
+    }
+    
+    message += '━━━━━━━━━━━━━━━━━━\n\n' +
+      'Используй /order-details <номер> чтобы увидеть детали заказа\n' +
+      'Используй /order-status <номер> чтобы изменить статус';
+    
+    await bot.sendMessage(chatId, message, { parse_mode: 'Markdown' });
+  } catch (error) {
+    console.error('❌ Ошибка при получении заказов:', error);
+    await bot.sendMessage(chatId, '❌ Ошибка при получении списка заказов');
+  }
+});
+
+// Команда /order-details <номер> - детали конкретного заказа
+bot.onText(/\/order-details\s+(.+)/, async (msg, match) => {
+  const chatId = msg.chat.id;
+  const orderNumber = match[1].trim();
+  
+  // Проверяем, администратор ли пользователь
+  if (!ADMIN_IDS.includes(msg.from.id)) {
+    await bot.sendMessage(chatId, '❌ У вас нет доступа к этой команде');
+    return;
+  }
+  
+  try {
+    const order = await getOrderByNumber(orderNumber);
+    
+    if (!order) {
+      await bot.sendMessage(chatId, `❌ Заказ #${orderNumber} не найден`);
+      return;
+    }
+    
+    const items = JSON.parse(order.items_json);
+    let itemsList = '';
+    items.forEach((item, idx) => {
+      itemsList += `${idx + 1}. ${item.title} x${item.qty} = $${item.lineTotal}\n`;
+    });
+    
+    const statusEmojis = {
+      pending: '⏳',
+      confirmed: '✅',
+      processing: '⚙️',
+      shipped: '📦',
+      delivered: '🎉',
+      cancelled: '❌'
+    };
+    
+    const message = `📋 *ДЕТАЛИ ЗАКАЗА #${orderNumber}*\n\n` +
+      `👤 *Заказчик:* ${order.customer_name}\n` +
+      `📞 *Контакт:* ${order.customer_contact}\n` +
+      `👥 *Telegram:* @${order.username} (ID: ${order.user_id})\n\n` +
+      `📦 *Товары:*\n${itemsList}\n` +
+      `💰 *Итого:* $${order.subtotal} ${order.currency}\n\n` +
+      `📋 *Примечание:* ${order.customer_note || 'не указано'}\n\n` +
+      `${statusEmojis[order.status]} *Статус:* ${getStatusLabel(order.status, 'ru')}\n` +
+      `📅 *Создан:* ${new Date(order.created_at).toLocaleString('ru-RU')}\n` +
+      `📅 *Обновлен:* ${new Date(order.updated_at).toLocaleString('ru-RU')}\n\n` +
+      `Используй /order-status ${orderNumber} чтобы изменить статус`;
+    
+    // Создаём inline-кнопки для изменения статуса
+    const statusSequence = ['pending', 'confirmed', 'processing', 'shipped', 'delivered'];
+    const nextStatus = statusSequence[statusSequence.indexOf(order.status) + 1];
+    
+    const keyboard = {
+      reply_markup: {
+        inline_keyboard: []
+      }
+    };
+    
+    if (nextStatus) {
+      keyboard.reply_markup.inline_keyboard.push([
+        {
+          text: `✅ Перейти на "${getStatusLabel(nextStatus, 'ru')}"`,
+          callback_data: `order_status_${orderNumber}_${nextStatus}`
+        }
+      ]);
+    }
+    
+    keyboard.reply_markup.inline_keyboard.push([
+      {
+        text: '❌ Отменить заказ',
+        callback_data: `order_status_${orderNumber}_cancelled`
+      }
+    ]);
+    
+    await bot.sendMessage(chatId, message, { parse_mode: 'Markdown', ...keyboard });
+  } catch (error) {
+    console.error('❌ Ошибка при получении деталей заказа:', error);
+    await bot.sendMessage(chatId, '❌ Ошибка при получении деталей заказа');
+  }
+});
+
+// Команда /my-orders - мои заказы для пользователей
+bot.onText(/\/my-orders/, async (msg) => {
+  const chatId = msg.chat.id;
+  const userId = msg.from.id;
+  
+  try {
+    const userOrders = await getUserOrders(userId);
+    
+    if (userOrders.length === 0) {
+      await bot.sendMessage(chatId, 
+        '📭 У вас пока нет заказов\n\n' +
+        '🛒 Используй /start чтобы перейти в каталог и сделать заказ',
+        { parse_mode: 'Markdown' }
+      );
+      return;
+    }
+    
+    const statusEmojis = {
+      pending: '⏳',
+      confirmed: '✅',
+      processing: '⚙️',
+      shipped: '📦',
+      delivered: '🎉',
+      cancelled: '❌'
+    };
+    
+    let message = `📦 *МОИ ЗАКАЗЫ* (всего: ${userOrders.length})\n\n`;
+    
+    userOrders.forEach((order, idx) => {
+      const createdDate = new Date(order.created_at).toLocaleDateString('ru-RU');
+      message += `${idx + 1}. Заказ #${order.order_number}\n` +
+        `   ${statusEmojis[order.status]} Статус: ${getStatusLabel(order.status, 'ru')}\n` +
+        `   💰 Сумма: $${order.subtotal} ${order.currency}\n` +
+        `   📅 Дата: ${createdDate}\n\n`;
+    });
+    
+    message += 'Используй /order-status <номер> чтобы узнать больше о конкретном заказе';
+    
+    await bot.sendMessage(chatId, message, { parse_mode: 'Markdown' });
+  } catch (error) {
+    console.error('❌ Ошибка при получении заказов пользователя:', error);
+    await bot.sendMessage(chatId, '❌ Ошибка при получении ваших заказов');
+  }
+});
+
+// Callback для изменения статуса заказа
+bot.on('callback_query', async (query) => {
+  if (!query.data.startsWith('order_status_')) return;
+  
+  const chatId = query.message.chat.id;
+  
+  // Проверяем, администратор ли пользователь
+  if (!ADMIN_IDS.includes(query.from.id)) {
+    await bot.answerCallbackQuery(query.id, { 
+      text: '❌ У вас нет доступа к этой функции',
+      show_alert: true 
+    });
+    return;
+  }
+  
+  try {
+    const parts = query.data.replace('order_status_', '').split('_');
+    const orderNumber = parts[0];
+    const newStatus = parts[1];
+    
+    // Получаем заказ для проверки
+    const order = await getOrderByNumber(orderNumber);
+    if (!order) {
+      await bot.answerCallbackQuery(query.id, { 
+        text: '❌ Заказ не найден',
+        show_alert: true 
+      });
+      return;
+    }
+    
+    // Обновляем статус
+    await updateOrderStatus(order.id, newStatus);
+    
+    const statusLabel = getStatusLabel(newStatus, 'ru');
+    const statusEmoji = {
+      pending: '⏳',
+      confirmed: '✅',
+      processing: '⚙️',
+      shipped: '📦',
+      delivered: '🎉',
+      cancelled: '❌'
+    }[newStatus];
+    
+    // Уведомляем администратора
+    await bot.answerCallbackQuery(query.id, { 
+      text: `✅ Статус изменён на "${statusLabel}"`,
+      show_alert: false 
+    });
+    
+    // Отправляем обновлённые детали заказа
+    await bot.editMessageText(
+      `${statusEmoji} *Заказ #${orderNumber} - Статус обновлён!*\n\n` +
+      `Новый статус: *${statusLabel}*\n\n` +
+      `Используй /order-details ${orderNumber} чтобы вернуться к деталям`,
+      {
+        chat_id: chatId,
+        message_id: query.message.message_id,
+        parse_mode: 'Markdown'
+      }
+    );
+    
+    // Уведомляем пользователя об изменении статуса
+    const updatedOrder = await getOrderByNumber(orderNumber);
+    const notificationMessage = `📦 *Статус вашего заказа #${orderNumber} изменился!*\n\n` +
+      `${statusEmoji} Новый статус: *${statusLabel}*\n\n` +
+      `Спасибо за заказ! 🙏`;
+    
+    try {
+      await bot.sendMessage(updatedOrder.user_id, notificationMessage, { parse_mode: 'Markdown' });
+    } catch (err) {
+      console.warn(`⚠️ Не удалось отправить уведомление пользователю ${updatedOrder.user_id}`);
+    }
+    
+    console.log(`✅ Статус заказа #${orderNumber} обновлён на "${statusLabel}"`);
+  } catch (error) {
+    console.error('❌ Ошибка при изменении статуса заказа:', error);
+    await bot.answerCallbackQuery(query.id, { 
+      text: '❌ Ошибка при изменении статуса',
+      show_alert: true 
+    });
+  }
+});
+
+// ========== ADVANCED ADMIN CRM COMMANDS ==========
+
+// Регистрируем админов при первом контакте
+bot.on('message', (msg) => {
+  if (msg.from && msg.from.username) {
+    registerAdminId(msg.from);
+  }
+});
+
+// Команда /admin - главное меню админов (только для @QValmont и @netslayer)
+bot.onText(/\/admin/, async (msg) => {
+  const chatId = msg.chat.id;
+  
+  if (!isAdmin(msg.from)) {
+    await bot.sendMessage(chatId, '❌ У вас нет доступа к админ-панели. Только @QValmont и @netslayer могут использовать эту команду.');
+    return;
+  }
+  
+  const adminInfo = getAdminInfo(msg.from);
+  const keyboard = {
+    reply_markup: {
+      inline_keyboard: [
+        [{ text: '📊 Панель управления', callback_data: 'admin_dashboard' }],
+        [{ text: '📈 Статистика', callback_data: 'admin_stats' }],
+        [{ text: '👥 Клиенты', callback_data: 'admin_customers' }],
+        [{ text: '📥 Экспортировать данные', callback_data: 'admin_export' }],
+        [{ text: '⚙️ Все заказы', callback_data: 'admin_all_orders' }]
+      ]
+    }
+  };
+  
+  await bot.sendMessage(chatId, 
+    `🔐 *АДМИН-ПАНЕЛЬ FLOWHAMMERR SHOP*\n\n` +
+    `👤 Вход как: *@${msg.from.username}*\n` +
+    `🎖️ Роль: *${adminInfo.role === 'super_admin' ? 'Супер Администратор' : 'Администратор'}*\n\n` +
+    `Выбери раздел для управления:`,
+    { parse_mode: 'Markdown', ...keyboard }
+  );
+});
+
+// Команда /admin-dashboard - детальная панель управления
+bot.onText(/\/admin-dashboard/, async (msg) => {
+  const chatId = msg.chat.id;
+  
+  if (!isAdmin(msg.from)) {
+    await bot.sendMessage(chatId, '❌ Доступ запрещён');
+    return;
+  }
+  
+  try {
+    await bot.sendMessage(chatId, '⏳ Загружаю данные панели управления...');
+    const stats = await getDashboardStats();
+    const message = formatStatsMessage(stats);
+    
+    const keyboard = {
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: '🔄 Обновить', callback_data: 'admin_dashboard' }],
+          [{ text: '📥 Экспортировать', callback_data: 'admin_export' }],
+          [{ text: '⬅️ Назад', callback_data: 'admin_menu' }]
+        ]
+      }
+    };
+    
+    await bot.sendMessage(chatId, message, { parse_mode: 'Markdown', ...keyboard });
+  } catch (error) {
+    console.error('❌ Ошибка панели управления:', error);
+    await bot.sendMessage(chatId, '❌ Ошибка при загрузке панели управления');
+  }
+});
+
+// Команда /admin-stats - детальная статистика
+bot.onText(/\/admin-stats/, async (msg) => {
+  const chatId = msg.chat.id;
+  
+  if (!isAdmin(msg.from)) {
+    await bot.sendMessage(chatId, '❌ Доступ запрещён');
+    return;
+  }
+  
+  try {
+    const stats = await getDashboardStats();
+    
+    let message = `📊 *ДЕТАЛЬНАЯ СТАТИСТИКА*\n\n`;
+    
+    // Daily revenue
+    message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+    message += `💵 *ВЫРУЧКА ПО ДНЯМ (ПОСЛЕДНИЕ 7)*\n`;
+    message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+    
+    const sortedDays = Object.entries(stats.revenueByDay)
+      .sort((a, b) => new Date(b[0]) - new Date(a[0]))
+      .slice(0, 7);
+    
+    sortedDays.forEach(([day, revenue]) => {
+      const orders = stats.ordersByDay[day];
+      message += `📅 ${day}: *$${revenue.toFixed(2)}* (${orders} заказов)\n`;
+    });
+    
+    message += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+    message += `🏆 *ПРОДУКТЫ - ПОЛНЫЙ РЕЙТИНГ*\n`;
+    message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+    
+    Object.entries(stats.topProducts)
+      .sort((a, b) => b[1].qty - a[1].qty)
+      .slice(0, 10)
+      .forEach(([product, data], idx) => {
+        message += `${idx + 1}. *${product}*\n`;
+        message += `   📦 Продано: ${data.qty} шт.\n`;
+        message += `   💰 Выручка: $${data.revenue.toFixed(2)}\n\n`;
+      });
+    
+    const keyboard = {
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: '⬅️ Назад в меню', callback_data: 'admin_menu' }]
+        ]
+      }
+    };
+    
+    await bot.sendMessage(chatId, message, { parse_mode: 'Markdown', ...keyboard });
+  } catch (error) {
+    console.error('❌ Ошибка статистики:', error);
+    await bot.sendMessage(chatId, '❌ Ошибка при получении статистики');
+  }
+});
+
+// Команда /admin-customers - информация о клиентах
+bot.onText(/\/admin-customers/, async (msg) => {
+  const chatId = msg.chat.id;
+  
+  if (!isAdmin(msg.from)) {
+    await bot.sendMessage(chatId, '❌ Доступ запрещён');
+    return;
+  }
+  
+  try {
+    const stats = await getDashboardStats();
+    
+    let message = `👥 *АНАЛИЗ КЛИЕНТОВ*\n\n`;
+    message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+    message += `📊 Всего уникальных клиентов: *${stats.topCustomers.length}*\n\n`;
+    
+    message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+    message += `🌟 *ТОП 10 ПОКУПАТЕЛЕЙ (ПОЛНЫЙ СПИСОК)*\n`;
+    message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+    
+    stats.topCustomers.slice(0, 10).forEach((customer, idx) => {
+      message += `${idx + 1}. *${customer.name}*\n`;
+      message += `   📞 ${customer.contact || '❓'}\n`;
+      message += `   🛒 Заказов: ${customer.count}\n`;
+      message += `   💳 Потратил: $${customer.totalSpent.toFixed(2)}\n`;
+      message += `   💲 Средний заказ: $${(customer.totalSpent / customer.count).toFixed(2)}\n\n`;
+    });
+    
+    const keyboard = {
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: '⬅️ Назад в меню', callback_data: 'admin_menu' }]
+        ]
+      }
+    };
+    
+    await bot.sendMessage(chatId, message, { parse_mode: 'Markdown', ...keyboard });
+  } catch (error) {
+    console.error('❌ Ошибка клиентов:', error);
+    await bot.sendMessage(chatId, '❌ Ошибка при получении данных клиентов');
+  }
+});
+
+// Команда /admin-export - экспортировать данные
+bot.onText(/\/admin-export/, async (msg) => {
+  const chatId = msg.chat.id;
+  
+  if (!isAdmin(msg.from)) {
+    await bot.sendMessage(chatId, '❌ Доступ запрещён');
+    return;
+  }
+  
+  try {
+    await bot.sendMessage(chatId, '⏳ Подготавливаю экспорт...');
+    const csv = await exportOrdersToCSV();
+    
+    if (!csv) {
+      await bot.sendMessage(chatId, '❌ Ошибка при создании экспорта');
+      return;
+    }
+    
+    // Отправляем CSV файл
+    const buffer = Buffer.from(csv, 'utf-8');
+    const timestamp = new Date().toISOString().split('T')[0];
+    
+    await bot.sendDocument(chatId, buffer, {
+      filename: `orders_export_${timestamp}.csv`,
+      caption: `📊 Экспорт заказов (${timestamp})`
+    });
+    
+    await bot.sendMessage(chatId, 
+      '✅ *Экспорт готов!*\n\n' +
+      '📥 CSV файл со всеми заказами отправлен.\n' +
+      'Используйте Excel или Google Sheets для анализа.',
+      { parse_mode: 'Markdown' }
+    );
+  } catch (error) {
+    console.error('❌ Ошибка экспорта:', error);
+    await bot.sendMessage(chatId, '❌ Ошибка при экспорте данных');
+  }
+});
+
+// Callback для админ-меню
+bot.on('callback_query', async (query) => {
+  if (!isAdmin(query.from)) {
+    await bot.answerCallbackQuery(query.id, { 
+      text: '❌ Доступ запрещён',
+      show_alert: true 
+    });
+    return;
+  }
+  
+  const chatId = query.message.chat.id;
+  
+  try {
+    if (query.data === 'admin_menu') {
+      const keyboard = {
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: '📊 Панель управления', callback_data: 'admin_dashboard' }],
+            [{ text: '📈 Статистика', callback_data: 'admin_stats' }],
+            [{ text: '👥 Клиенты', callback_data: 'admin_customers' }],
+            [{ text: '📥 Экспортировать данные', callback_data: 'admin_export' }],
+            [{ text: '⚙️ Все заказы', callback_data: 'admin_all_orders' }]
+          ]
+        }
+      };
+      
+      await bot.editMessageText(
+        `🔐 *АДМИН-ПАНЕЛЬ FLOWHAMMERR SHOP*\n\n` +
+        `👤 Вход как: *@${query.from.username}*\n\n` +
+        `Выбери раздел для управления:`,
+        {
+          chat_id: chatId,
+          message_id: query.message.message_id,
+          parse_mode: 'Markdown',
+          reply_markup: keyboard.reply_markup
+        }
+      );
+    } else if (query.data === 'admin_dashboard') {
+      await bot.answerCallbackQuery(query.id);
+      const stats = await getDashboardStats();
+      const message = formatStatsMessage(stats);
+      
+      const keyboard = {
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: '🔄 Обновить', callback_data: 'admin_dashboard' }],
+            [{ text: '📥 Экспортировать', callback_data: 'admin_export' }],
+            [{ text: '⬅️ Назад', callback_data: 'admin_menu' }]
+          ]
+        }
+      };
+      
+      await bot.editMessageText(message, {
+        chat_id: chatId,
+        message_id: query.message.message_id,
+        parse_mode: 'Markdown',
+        reply_markup: keyboard.reply_markup
+      });
+    } else if (query.data === 'admin_stats') {
+      await bot.answerCallbackQuery(query.id);
+      const stats = await getDashboardStats();
+      
+      let message = `📊 *ДЕТАЛЬНАЯ СТАТИСТИКА*\n\n`;
+      message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      message += `💵 *ВЫРУЧКА ПО ДНЯМ (ПОСЛЕДНИЕ 7)*\n`;
+      message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      
+      const sortedDays = Object.entries(stats.revenueByDay)
+        .sort((a, b) => new Date(b[0]) - new Date(a[0]))
+        .slice(0, 7);
+      
+      sortedDays.forEach(([day, revenue]) => {
+        const orders = stats.ordersByDay[day];
+        message += `📅 ${day}: *$${revenue.toFixed(2)}* (${orders} заказов)\n`;
+      });
+      
+      const keyboard = {
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: '⬅️ Назад в меню', callback_data: 'admin_menu' }]
+          ]
+        }
+      };
+      
+      await bot.editMessageText(message, {
+        chat_id: chatId,
+        message_id: query.message.message_id,
+        parse_mode: 'Markdown',
+        reply_markup: keyboard.reply_markup
+      });
+    } else if (query.data === 'admin_customers') {
+      await bot.answerCallbackQuery(query.id);
+      const stats = await getDashboardStats();
+      
+      let message = `👥 *АНАЛИЗ КЛИЕНТОВ*\n\n`;
+      message += `📊 Всего уникальных клиентов: *${stats.topCustomers.length}*\n\n`;
+      message += `🌟 *ТОП ПОКУПАТЕЛЕЙ*\n`;
+      
+      stats.topCustomers.slice(0, 5).forEach((customer, idx) => {
+        message += `${idx + 1}. *${customer.name}* - $${customer.totalSpent.toFixed(2)}\n`;
+      });
+      
+      const keyboard = {
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: '⬅️ Назад в меню', callback_data: 'admin_menu' }]
+          ]
+        }
+      };
+      
+      await bot.editMessageText(message, {
+        chat_id: chatId,
+        message_id: query.message.message_id,
+        parse_mode: 'Markdown',
+        reply_markup: keyboard.reply_markup
+      });
+    }
+  } catch (error) {
+    console.error('❌ Ошибка callback:', error);
+    await bot.answerCallbackQuery(query.id, { 
+      text: '❌ Ошибка обработки',
+      show_alert: true 
+    });
   }
 });
 

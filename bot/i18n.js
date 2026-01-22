@@ -11,8 +11,8 @@ const locales = { en, ru, vi };
  * @returns {string} Translated string
  */
 function t(lang, key) {
-  const normalizedLang = (lang || 'en').toLowerCase();
-  const locale = locales[normalizedLang] || locales.en;
+  const normalizedLang = (lang || 'ru').toLowerCase();
+  const locale = locales[normalizedLang] || locales.ru;
   
   const keys = key.split('.');
   let value = locale;
@@ -31,12 +31,12 @@ function t(lang, key) {
  * @returns {string} Language code (en, ru, vi)
  */
 function getUserLanguage(user) {
-  if (!user || !user.language_code) return 'en';
+  if (!user || !user.language_code) return 'ru'; // Default to Russian
   
   const lang = user.language_code.toLowerCase();
   if (lang.startsWith('ru')) return 'ru';
   if (lang.startsWith('vi')) return 'vi';
-  return 'en';
+  return 'ru'; // Default to Russian instead of English
 }
 
 module.exports = { t, getUserLanguage, locales };
