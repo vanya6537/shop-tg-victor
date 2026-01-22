@@ -34,22 +34,6 @@ export const PRODUCTS: ShopProduct[] = [
     ],
   },
   {
-    id: 'roller-fascia-360',
-    category: 'massage',
-    price: 29.99,
-    currency: 'USD',
-    accent: '#B300FF',
-    emoji: '🌀',
-    nameKey: 'products.items.roller-fascia-360.name',
-    shortDescKey: 'products.items.roller-fascia-360.short',
-    detailsKey: 'products.items.roller-fascia-360.details',
-    featuresKeys: [
-      'products.items.roller-fascia-360.f1',
-      'products.items.roller-fascia-360.f2',
-      'products.items.roller-fascia-360.f3',
-    ],
-  },
-  {
     id: 'stick-mini-pocket',
     category: 'massage',
     price: 12.99,

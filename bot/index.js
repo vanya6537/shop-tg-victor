@@ -209,11 +209,11 @@ bot.onText(/\/start/, (msg) => {
 bot.onText(/\/help/, (msg) => {
   const chatId = msg.chat.id;
   bot.sendMessage(chatId,
-    'products - Наши три звёзды (массажные палки)\n' +
+    '📚 Доступные команды:\n' +
+    '/start - Главное меню\n' +
+    '/products - Наши три звёзды (массажные палки)\n' +
     '/trust - Почему вам стоит нам верить\n' +
-    '/book - Оформить заказ+
-    '/shows - Посмотреть все шоу\n' +
-    '/book - Забронировать шоу\n' +
+    '/book - Оформить заказ\n' +
     '/contact - Контактная информация\n' +
     '/logs - Показать логи сообщений\n' +
     '/logs-clear - Очистить логи\n' +
@@ -221,7 +221,8 @@ bot.onText(/\/help/, (msg) => {
     '/help - Справка'
   );
 });
-products - подробная информация о трёх хедлайнерских палках
+
+// Команда /products - подробная информация о трёх хедлайнерских палках
 bot.onText(/\/products/, (msg) => {
   const chatId = msg.chat.id;
   const productsMessage = 
@@ -265,8 +266,7 @@ bot.onText(/\/products/, (msg) => {
     }
   };
 
-  bot.sendMessage(chatId, product
-  bot.sendMessage(chatId, showsMessage, { parse_mode: 'Markdown', ...keyboard });
+  bot.sendMessage(chatId, productsMessage, { parse_mode: 'Markdown', ...keyboard });
 });
 
 // Команда /trust - доверие и маркетинг

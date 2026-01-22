@@ -19,6 +19,7 @@ export const Shop = () => {
   const [category, setCategory] = useState<ProductCategory | 'all'>('all');
   const [sort, setSort] = useState<SortKey>('featured');
   const [detailsId, setDetailsId] = useState<string | null>(null);
+  const [sortOpen, setSortOpen] = useState(false);
 
   const products = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -74,16 +75,46 @@ export const Shop = () => {
             />
           </div>
 
-          <div className="md:col-span-3">
-            <select
-              value={sort}
-              onChange={(e) => setSort(e.target.value as SortKey)}
-              className="w-full rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-neon-green/50"
+          <div className="md:col-span-3 relative">
+            <button
+              onClick={() => setSortOpen(!sortOpen)}
+              className="w-full rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-neon-green/50 flex items-center justify-between hover:bg-white/10 transition"
             >
-              <option value="featured">{t('shop.sort.featured')}</option>
-              <option value="priceAsc">{t('shop.sort.priceAsc')}</option>
-              <option value="priceDesc">{t('shop.sort.priceDesc')}</option>
-            </select>
+              <span>
+                {sort === 'featured' && t('shop.sort.featured')}
+                {sort === 'priceAsc' && t('shop.sort.priceAsc')}
+                {sort === 'priceDesc' && t('shop.sort.priceDesc')}
+              </span>
+              <span className="text-white/60">▼</span>
+            </button>
+            {sortOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.15 }}
+                className="absolute top-full left-0 right-0 mt-2 rounded-2xl border border-white/10 bg-neon-darker/95 backdrop-blur-sm shadow-lg z-10 overflow-hidden"
+              >
+                {(['featured', 'priceAsc', 'priceDesc'] as const).map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => {
+                      setSort(s);
+                      setSortOpen(false);
+                    }}
+                    className={`w-full px-4 py-3 text-left transition ${
+                      sort === s
+                        ? 'bg-neon-green/20 text-neon-green font-semibold border-l-2 border-neon-green'
+                        : 'text-white/80 hover:bg-white/10 border-l-2 border-transparent'
+                    }`}
+                  >
+                    {s === 'featured' && t('shop.sort.featured')}
+                    {s === 'priceAsc' && t('shop.sort.priceAsc')}
+                    {s === 'priceDesc' && t('shop.sort.priceDesc')}
+                  </button>
+                ))}
+              </motion.div>
+            )}
           </div>
 
           <div className="md:col-span-2 flex gap-2">
