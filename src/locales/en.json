@@ -134,12 +134,12 @@
         "f3": "Ear-friendly cut"
       },
       "helmet-cover-style": {
-        "name": "Style Helmet Cover",
-        "short": "Bright designs, clean look, quick on/off.",
-        "details": "Add a bit of style while keeping your helmet protected. Easy to put on and take off.",
-        "f1": "Vibrant patterns",
-        "f2": "UV-resistant color",
-        "f3": "Quick on/off"
+        "name": "Character Full-Face Helmet Cover (Stitch-style)",
+        "short": "Cute character look + full-face coverage.",
+        "details": "Soft plush character-style helmet cover that adds a fun look and helps keep your helmet cleaner. Great for daily rides and photos.",
+        "f1": "Full-face character design",
+        "f2": "Soft plush fabric",
+        "f3": "Easy to put on and take off"
       }
     }
   },

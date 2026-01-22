@@ -134,12 +134,12 @@
         "f3": "Thiết kế thân thiện vùng tai"
       },
       "helmet-cover-style": {
-        "name": "Áo/che mũ bảo hiểm thời trang",
-        "short": "Màu sắc nổi bật, gọn gàng, dễ tháo/lắp.",
-        "details": "Thêm chút phong cách và bảo vệ mũ. Thao tác nhanh, tiện lợi.",
-        "f1": "Họa tiết nổi bật",
-        "f2": "Màu bền, hạn chế phai",
-        "f3": "Tháo/lắp nhanh"
+        "name": "Áo/che mũ bảo hiểm nhân vật (full face, kiểu Stitch)",
+        "short": "Dễ thương + che kín toàn bộ phần mặt.",
+        "details": "Áo/che mũ kiểu nhân vật bằng vải plush mềm, tạo điểm nhấn đáng yêu và giúp mũ sạch hơn. Phù hợp đi hằng ngày và chụp ảnh.",
+        "f1": "Thiết kế nhân vật che full face",
+        "f2": "Vải plush mềm",
+        "f3": "Dễ tháo/lắp"
       }
     }
   },
