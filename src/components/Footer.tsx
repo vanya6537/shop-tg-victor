@@ -75,6 +75,18 @@ export const Footer = () => {
           >
             <h3 className="text-2xl font-black text-neon-green mb-4">{t('footer.followUs')}</h3>
             <div className="flex gap-4 flex-wrap">
+              <motion.button
+                onClick={() => window.location.href = '/#admin'}
+                whileHover={{ 
+                  scale: 1.3,
+                  textShadow: '0 0 15px rgba(138, 43, 226, 0.8)',
+                  color: '#8A2BE2'
+                }}
+                className="text-purple-400 text-2xl hover:text-purple-300 transition-all duration-300 font-bold cursor-pointer"
+                title="Admin Panel"
+              >
+                🔐
+              </motion.button>
               <motion.a
                 href="https://www.notion.so/FlowHammer-2f0a47a7bb498080bd74ed0ccd8f9174"
                 target="_blank"

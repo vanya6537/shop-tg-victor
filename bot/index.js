@@ -186,6 +186,7 @@ bot.on('channel_post', (msg) => {
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
   const lang = getLanguageForUser(msg.from);
+  const adminUser = isAdmin(msg.from);
   
   // Кнопки выбора языка
   const languageKeyboard = {
@@ -213,7 +214,12 @@ bot.onText(/\/start/, (msg) => {
             text: '🛒 ' + (lang === 'ru' ? 'Оформить заказ' : lang === 'vi' ? 'Đặt hàng' : 'Order'),
             web_app: { url: `${WEBAPP_URL}#booking` }
           }
-        ]
+        ],
+        // Добавляем админ кнопку если пользователь администратор
+        ...(adminUser ? [[{
+          text: '🔐 ' + (lang === 'ru' ? 'Админ-Панель' : lang === 'vi' ? 'Bảng Điều Khiển' : 'Admin Panel'),
+          web_app: { url: `${WEBAPP_URL}#admin` }
+        }]] : [])
       ],
       resize_keyboard: true
     }
@@ -231,7 +237,12 @@ bot.onText(/\/start/, (msg) => {
             text: t(lang, 'buttons.contacts'),
             callback_data: 'contact_info'
           }
-        ]
+        ],
+        // Добавляем админ кнопку для администраторов
+        ...(adminUser ? [[{
+          text: '🔐 ' + (lang === 'ru' ? 'Администрирование' : lang === 'vi' ? 'Quản Trị' : 'Administration'),
+          callback_data: 'admin_menu'
+        }]] : [])
       ]
     }
   };
@@ -247,7 +258,8 @@ bot.onText(/\/start/, (msg) => {
   // Отправляем основное сообщение с inline кнопками
   bot.sendMessage(chatId, 
     t(lang, 'start.title') + '\n\n' +
-    t(lang, 'start.description'), 
+    t(lang, 'start.description') +
+    (adminUser ? '\n\n👑 *Административный режим активирован*' : ''), 
     inlineKeyboard
   );
   
@@ -740,6 +752,62 @@ bot.on('callback_query', (query) => {
       break;
       
     default:
+      // Проверяем админ-меню
+      if (query.data === 'admin_menu') {
+        const lang = getLanguageForUser(query.from);
+        if (!isAdmin(query.from)) {
+          bot.answerCallbackQuery(query.id, { text: '❌ Access Denied', show_alert: true });
+          return;
+        }
+        bot.answerCallbackQuery(query.id);
+        
+        const adminMenuMsg = lang === 'ru' ? 
+          '👑 *МЕНЮ АДМИНИСТРАТОРА*\n\n' +
+          '🔐 Вы имеете доступ к следующим функциям:\n\n' +
+          '📊 /admin - главное меню администратора\n' +
+          '📋 /admin-dashboard - панель управления\n' +
+          '📈 /admin-stats - статистика и аналитика\n' +
+          '📦 /orders - все заказы\n' +
+          '🌐 Веб-панель: ' + WEBAPP_URL + '#admin\n\n' +
+          '💡 *Подсказка:* используйте веб-панель для полного контроля\n' +
+          'Откройте в браузере ↓' :
+          lang === 'vi' ?
+          '👑 *MENU QUẢN TRỊ*\n\n' +
+          '🔐 Bạn có quyền truy cập các tính năng sau:\n\n' +
+          '📊 /admin - menu quản trị chính\n' +
+          '📋 /admin-dashboard - bảng điều khiển\n' +
+          '📈 /admin-stats - thống kê và phân tích\n' +
+          '📦 /orders - tất cả đơn hàng\n' +
+          '🌐 Web Panel: ' + WEBAPP_URL + '#admin\n\n' +
+          '💡 *Mẹo:* sử dụng web panel để kiểm soát hoàn toàn\n' +
+          'Mở trong trình duyệt ↓' :
+          '👑 *ADMIN MENU*\n\n' +
+          '🔐 You have access to the following features:\n\n' +
+          '📊 /admin - admin main menu\n' +
+          '📋 /admin-dashboard - management panel\n' +
+          '📈 /admin-stats - statistics and analytics\n' +
+          '📦 /orders - all orders\n' +
+          '🌐 Web Panel: ' + WEBAPP_URL + '#admin\n\n' +
+          '💡 *Tip:* use web panel for full control\n' +
+          'Open in browser ↓';
+        
+        const adminKeyboard = {
+          reply_markup: {
+            inline_keyboard: [
+              [
+                {
+                  text: '🔐 ' + (lang === 'ru' ? 'Открыть Веб-Панель' : lang === 'vi' ? 'Mở Bảng Web' : 'Open Web Panel'),
+                  web_app: { url: `${WEBAPP_URL}#admin` }
+                }
+              ]
+            ]
+          }
+        };
+        
+        bot.sendMessage(chatId, adminMenuMsg, { parse_mode: 'Markdown', ...adminKeyboard });
+        return;
+      }
+      
       console.log(`⚠️ Неизвестная кнопка: ${query.data}`);
       bot.answerCallbackQuery(query.id, { text: '⚠️ Неизвестная команда' });
       break;

@@ -209,15 +209,24 @@ export default function AdminPanel() {
               👤 {adminUsername}
             </span>
           </div>
-          <button
-            onClick={() => {
-              setIsAuthenticated(false);
-              setAdminUsername('');
-            }}
-            className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded transition"
-          >
-            🚪 Logout
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={() => window.location.href = '/#home'}
+              className="bg-cyan-600 hover:bg-cyan-700 px-4 py-2 rounded transition font-semibold"
+              title="Return to shop"
+            >
+              🏪 Shop
+            </button>
+            <button
+              onClick={() => {
+                setIsAuthenticated(false);
+                setAdminUsername('');
+              }}
+              className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded transition font-semibold"
+            >
+              🚪 Logout
+            </button>
+          </div>
         </div>
       </div>
 

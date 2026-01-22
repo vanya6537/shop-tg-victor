@@ -48,6 +48,16 @@ export const Header = ({ onLanguageChange, cartCount, onOpenCart }: NavProps) =>
             <motion.button
               whileHover={{ scale: 1.08 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => window.location.href = '/#admin'}
+              className="hidden sm:flex px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 bg-purple-600/20 text-purple-300 border border-purple-500/50 hover:bg-purple-600/40 hover:text-purple-200 items-center gap-1"
+              title="Admin Panel (requires login)"
+            >
+              🔐 Admin
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.95 }}
               onClick={onOpenCart}
               className="relative px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 bg-white/5 text-white/80 border border-white/10 hover:bg-white/10 hover:text-white"
               aria-label={t('cart.open')}
