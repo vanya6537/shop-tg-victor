@@ -1,6 +1,6 @@
-# Science Show Telegram Bot
+# FlowHammer Telegram Bot
 
-Telegram бот для управления бронированиями науных шоу "Science Show Da Nang" от Виктора Вальмонта.
+Telegram бот для управления продажами массажных палок и нашлемников "FlowHammer Da Nang".
 
 ## Установка
 

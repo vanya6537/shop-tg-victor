@@ -1,7 +1,7 @@
 #!/bin/bash
-# Science Show Webapp - Installation Script
+# FlowHammer Webapp - Installation Script
 
-echo "🚀 Installing Science Show Webapp dependencies..."
+echo "🚀 Installing FlowHammer Webapp dependencies..."
 npm install
 
 echo ""

@@ -1,4 +1,4 @@
-# Science Show Telegram Mini App
+# FlowHammer Telegram Mini App
 
 🔬✨ **Mind-Blowing Science Show Experience for Da Nang Expats**
 

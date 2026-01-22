@@ -36,7 +36,7 @@ export const Footer = () => {
             className="text-neon-blue transition-colors duration-300"
           >
             <h3 className="text-2xl font-black bg-gradient-to-r from-neon-blue to-neon-purple bg-clip-text text-transparent mb-3">
-              ⚡ Science Show
+              💎 FlowHammer
             </h3>
             <p className="opacity-80 font-semibold leading-relaxed">
               {t('footer.description')}
@@ -118,7 +118,7 @@ export const Footer = () => {
 
         <div className="text-center text-neon-blue opacity-70 text-sm font-semibold">
           <p>
-            © {currentYear} Science Show Da Nang. {t('footer.rights')}.
+            © {currentYear} FlowHammer Da Nang. {t('footer.rights')}.
           </p>
         </div>
       </div>
