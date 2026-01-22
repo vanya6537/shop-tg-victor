@@ -1,0 +1,43 @@
+{
+  "start": {
+    "title": "🛍️ *FLOW HAMMER SHOP DA NANG*",
+    "description": "✨ Professional massage sticks & branded helmet cover\n💪 For athletes, yogis, drivers — for you!\n\n⭐ *Trendy quality, real results.*\n\nCheck out our headliners and find your perfect length:",
+    "catalog": "🛒 Open catalog or place an order:"
+  },
+  "products": {
+    "title": "🛍️ *OUR THREE STARS*\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "compact": "🧊 *COMPACT: Mini Pocket (12.99$)*\n📏 Length: 10 cm — in pocket, on the go\n✨ Perfect for: office, travel, quick sessions\n💪 Material: ABS plastic + silicone\n⭐ Technique: comfortable grip",
+    "medium": "💆 *MEDIUM: Therapy Ergonomic (24.99$)*\n📏 Length: 30 cm — universal\n✨ Perfect for: home, gym, daily use\n💪 Material: flexible body + soft tip\n⭐ Technique: precise trigger point targeting",
+    "professional": "🥇 *PROFESSIONAL: Acupressure Pro (19.99$)*\n📏 Length: 45 cm — for serious work\n✨ Perfect for: deep massage, back, legs\n💪 Material: hardcore ABS + hard silicone\n⭐ Technique: traditional acupressure",
+    "helmet": "🎯 *PLUS: Character Helmet Cover (8.99$)*\n😊 Cute full-face design for motorcyclists\n🛡️ Helmet protection + style",
+    "footer": "━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n✅ *3000+ satisfied customers*\n✅ 30-day quality guarantee\n✅ Free shipping on first order\n\nClick the button below to add to cart!",
+    "helmet_description": "🧸 *Character Helmet Cover - Style & Protection*\n💙 Cute design | ✨ High quality\n🏍️ For motorcyclists | 💰 8.99$"
+  },
+  "trust": {
+    "title": "💎 *WHY CHOOSE US*",
+    "expert": "🏆 *EXPERT IN THE FIELD*\nOur team trained in Thailand and Vietnam.\nEvery product tested personally.",
+    "reviews": "⭐ *REAL CUSTOMER REVIEWS*\n\"Stick helped me get rid of back pain!\" — Maria\n\"Take it everywhere, saves from stress!\" — Tom\n\"Quality is beyond praise!\" — Anna",
+    "quality": "🔐 *TRUST = QUALITY*\n✅ Certified materials (non-toxic)\n✅ Passed dermatological tests\n✅ Meet international standards",
+    "price": "💰 *FAIR PRICE*\nDirect supplies from manufacturer = minimum markup.\nPromo code WELCOME10 gives you 10% off first order.",
+    "speed": "🚀 *FAST & CONVENIENT*\n📦 Delivery in Da Nang 24-48 hours\n📦 Vietnam-wide: 2-3 days\n📦 International shipping available",
+    "guarantee": "❤️ *30-DAY GUARANTEE*\nNot satisfied — money back, no questions asked.",
+    "footer": "━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nLet's start your path to health! 💪"
+  },
+  "contact": {
+    "title": "💎 *FLOW HAMMER SHOP CONTACTS*",
+    "info": "👤 *Flow Hammer Shop Da Nang*\n🛍️ Best massage sticks in Vietnam",
+    "email_label": "📧 *Email:*",
+    "phone_label": "📱 *Phone:*",
+    "address_label": "📍 *Address:*",
+    "hours_label": "🕐 *Working Hours:*",
+    "address": "Da Nang, Vietnam",
+    "hours": "Daily 09:00 - 21:00",
+    "footer": "🛒 To order: /book\n💎 Trust, quality, results! 💪"
+  },
+  "buttons": {
+    "products": "🛍️ Products",
+    "contacts": "💬 Contacts",
+    "shop": "🛒 Open Shop",
+    "book": "📋 Place Order"
+  }
+}

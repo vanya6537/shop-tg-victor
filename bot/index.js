@@ -1,5 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
+const { t, getUserLanguage } = require('./i18n');
 
 // Загружаем переменные окружения из .env файла
 const BOT_TOKEN = process.env.BOT_TOKEN;
@@ -165,6 +166,7 @@ bot.on('channel_post', (msg) => {
 // Команда /start - смешанное меню (ReplyKeyboard + Inline)
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
+  const lang = getUserLanguage(msg.from);
   
   // Сначала отправляем ReplyKeyboard с web_app кнопками
   const replyKeyboard = {
@@ -172,11 +174,11 @@ bot.onText(/\/start/, (msg) => {
       keyboard: [
         [
           {
-            text: '🛒 Магазин',
+            text: '🛒 ' + (lang === 'ru' ? 'Магазин' : lang === 'vi' ? 'Cửa hàng' : 'Shop'),
             web_app: { url: WEBAPP_URL }
           },
           {
-            text: '🛒 Оформить заказ',
+            text: '🛒 ' + (lang === 'ru' ? 'Оформить заказ' : lang === 'vi' ? 'Đặt hàng' : 'Order'),
             web_app: { url: `${WEBAPP_URL}#booking` }
           }
         ]
@@ -190,11 +192,11 @@ bot.onText(/\/start/, (msg) => {
       inline_keyboard: [
         [
           {
-            text: '🛍️ Товары',
+            text: t(lang, 'buttons.products'),
             callback_data: 'products_list'
           },
           {
-            text: '💬 Контакты',
+            text: t(lang, 'buttons.contacts'),
             callback_data: 'contact_info'
           }
         ]
@@ -204,17 +206,14 @@ bot.onText(/\/start/, (msg) => {
 
   // Отправляем основное сообщение с inline кнопками
   bot.sendMessage(chatId, 
-    '🛍️ *FLOW HAMMER SHOP DA NANG*\n\n' +
-    '✨ Профессиональные массажные палки & фирменный нашлемник\n' +
-    '💪 Для спортсменов, йогов, водителей — для вас!\n\n' +
-    '⭐ *Трендовое качество, реальные результаты.*\n\n' +
-    'Посмотри наши хедлайнеры и найди свою идеальную длину:', 
+    t(lang, 'start.title') + '\n\n' +
+    t(lang, 'start.description'), 
     inlineKeyboard
   );
   
   // Отправляем отдельное сообщение с web_app кнопками для бронирования
   bot.sendMessage(chatId,
-    '🛒 Открой каталог или оформи заказ:',
+    '🛒 ' + t(lang, 'start.catalog'),
     replyKeyboard
   );
 });
@@ -513,7 +512,7 @@ bot.on('callback_query', (query) => {
       // Send helmet cover image
       console.log('📸 Отправляю фото товара...');
       try {
-        const helmetImageUrl = 'https://picsum.photos/400/400?random=' + Date.now();
+        const helmetImageUrl = 'https://i.ibb.co/mrBvbTL5/2026-01-23-03-55-03.jpg'
         bot.sendPhoto(chatId, helmetImageUrl, {
           caption: '🧸 *Character Helmet Cover - Стиль & Защита*\n💙 Милый дизайн | ✨ Высокое качество\n🏍️ Для мотоциклистов | 💰 8.99$',
           parse_mode: 'Markdown'

@@ -1,0 +1,43 @@
+{
+  "start": {
+    "title": "🛍️ *FLOW HAMMER SHOP DA NANG*",
+    "description": "✨ Gậy massage chuyên nghiệp & nón bảo hiểm thương hiệu\n💪 Cho vận động viên, yoga, tài xế — cho bạn!\n\n⭐ *Chất lượng thời thượng, kết quả thực.*\n\nXem những sản phẩm hàng đầu của chúng tôi và tìm chiều dài hoàn hảo:",
+    "catalog": "🛒 Mở danh mục hoặc đặt hàng:"
+  },
+  "products": {
+    "title": "🛍️ *BA NGÔI SAO CỦA CHÚNG TÔI*\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "compact": "🧊 *NHỎ GỌN: Mini Pocket (12.99$)*\n📏 Độ dài: 10 cm — trong túi, trên đường\n✨ Hoàn hảo cho: văn phòng, du lịch, phiên nhanh\n💪 Vật liệu: nhựa ABS + silicone\n⭐ Kỹ thuật: cầm thoải mái",
+    "medium": "💆 *TRUNG BÌNH: Therapy Ergonomic (24.99$)*\n📏 Độ dài: 30 cm — đa năng\n✨ Hoàn hảo cho: nhà, phòng tập, sử dụng hàng ngày\n💪 Vật liệu: thân mềm + đầu mềm\n⭐ Kỹ thuật: nhắm trúng các điểm trigger",
+    "professional": "🥇 *CHUYÊN NGHIỆP: Acupressure Pro (19.99$)*\n📏 Độ dài: 45 cm — công việc nặng\n✨ Hoàn hảo cho: massage sâu, lưng, chân\n💪 Vật liệu: ABS cứng + silicone cứng\n⭐ Kỹ thuật: bấm huyệt truyền thống",
+    "helmet": "🎯 *CỘNG: Character Helmet Cover (8.99$)*\n😊 Thiết kế dễ thương toàn mặt cho người đi xe máy\n🛡️ Bảo vệ nón + phong cách",
+    "footer": "━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n✅ *3000+ khách hàng hài lòng*\n✅ Bảo hành chất lượng 30 ngày\n✅ Miễn phí vận chuyển đơn hàng đầu tiên\n\nNhấp vào nút bên dưới để thêm vào giỏ hàng!",
+    "helmet_description": "🧸 *Character Helmet Cover - Phong Cách & Bảo Vệ*\n💙 Thiết kế dễ thương | ✨ Chất lượng cao\n🏍️ Cho người đi xe máy | 💰 8.99$"
+  },
+  "trust": {
+    "title": "💎 *TẠI SAO CHỌN CHÚNG TÔI*",
+    "expert": "🏆 *CHUYÊN GIA TRONG LĨNH VỰC*\nĐội ngũ của chúng tôi được đào tạo tại Thái Lan và Việt Nam.\nMỗi sản phẩm được kiểm tra cá nhân.",
+    "reviews": "⭐ *ĐÁNH GIÁ CỦA KHÁCH HÀNG THỰC*\n\"Cây giúp tôi loại bỏ đau lưng!\" — Maria\n\"Mang theo mọi nơi, cứu tôi khỏi căng thẳng!\" — Tom\n\"Chất lượng vượt quá lời khen!\" — Anna",
+    "quality": "🔐 *TIN TỨC = CHẤT LƯỢNG*\n✅ Vật liệu được chứng nhận (không độc hại)\n✅ Vượt qua các bài kiểm tra da liễu\n✅ Đáp ứng tiêu chuẩn quốc tế",
+    "price": "💰 *GIÁ CÔNG BẰNG*\nNhập khẩu trực tiếp từ nhà sản xuất = chi phí tối thiểu.\nMã promo WELCOME10 cho bạn 10% chiết khấu lần đầu.",
+    "speed": "🚀 *NHANH & TIỆN LỢI*\n📦 Giao hàng ở Da Nang 24-48 giờ\n📦 Toàn Việt Nam: 2-3 ngày\n📦 Vận chuyển quốc tế có sẵn",
+    "guarantee": "❤️ *BẢO HÀNH 30 NGÀY*\nKhông hài lòng — hoàn tiền, không có câu hỏi.",
+    "footer": "━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nHãy bắt đầu con đường khỏe mạnh của bạn! 💪"
+  },
+  "contact": {
+    "title": "💎 *LIÊN HỆ FLOW HAMMER SHOP*",
+    "info": "👤 *Flow Hammer Shop Da Nang*\n🛍️ Những chiếc gậy massage tốt nhất ở Việt Nam",
+    "email_label": "📧 *Email:*",
+    "phone_label": "📱 *Điện thoại:*",
+    "address_label": "📍 *Địa chỉ:*",
+    "hours_label": "🕐 *Giờ làm việc:*",
+    "address": "Da Nang, Vietnam",
+    "hours": "Hàng ngày 09:00 - 21:00",
+    "footer": "🛒 Để đặt hàng: /book\n💎 Tin tức, chất lượng, kết quả! 💪"
+  },
+  "buttons": {
+    "products": "🛍️ Sản phẩm",
+    "contacts": "💬 Liên hệ",
+    "shop": "🛒 Mở cửa hàng",
+    "book": "📋 Đặt hàng"
+  }
+}
