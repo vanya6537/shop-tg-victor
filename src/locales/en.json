@@ -14,7 +14,10 @@
     "clearedTitle": "Cart cleared",
     "clearedMessage": "Your cart is now empty",
     "checkoutTitle": "Checkout",
-    "checkoutMessage": "Fill the form to send your order"
+    "checkoutMessage": "Fill the form to send your order",
+    "promoAppliedTitle": "Promo applied",
+    "promoAppliedMessage": "Code {{code}} activated",
+    "promoInvalidTitle": "Promo not applied"
   },
   "nav": {
     "home": "Home",
@@ -51,6 +54,19 @@
     "decreaseQty": "Decrease quantity",
     "increaseQty": "Increase quantity",
     "subtotal": "Subtotal",
+    "discount": "Discount",
+    "shipping": "Shipping",
+    "freeShipping": "Free",
+    "total": "Total",
+    "unitPrice": "Unit price:",
+    "lineTotal": "Line total",
+    "promoTitle": "Promo code",
+    "promoPlaceholder": "Enter code (WELCOME10 / DN20)",
+    "apply": "Apply",
+    "promoApplied": "Applied {{code}} (−{{value}})",
+    "promoInvalid": "Promo code is invalid",
+    "currencyMismatchTitle": "Mixed currency cart",
+    "currencyMismatchDesc": "Checkout supports one currency at a time. Remove items with a different currency.",
     "clear": "Clear",
     "checkout": "Checkout",
     "checkoutHint": "Checkout sends your cart to the bot."

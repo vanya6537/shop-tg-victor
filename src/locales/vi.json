@@ -14,7 +14,10 @@
     "clearedTitle": "Đã xóa giỏ",
     "clearedMessage": "Giỏ hàng hiện đang trống",
     "checkoutTitle": "Thanh toán",
-    "checkoutMessage": "Điền form để gửi đơn hàng"
+    "checkoutMessage": "Điền form để gửi đơn hàng",
+    "promoAppliedTitle": "Đã áp dụng mã",
+    "promoAppliedMessage": "Đã kích hoạt mã {{code}}",
+    "promoInvalidTitle": "Không áp dụng được mã"
   },
   "nav": {
     "home": "Trang Chủ",
@@ -51,6 +54,19 @@
     "decreaseQty": "Giảm số lượng",
     "increaseQty": "Tăng số lượng",
     "subtotal": "Tạm tính",
+    "discount": "Giảm giá",
+    "shipping": "Phí vận chuyển",
+    "freeShipping": "Miễn phí",
+    "total": "Tổng cộng",
+    "unitPrice": "Đơn giá:",
+    "lineTotal": "Thành tiền",
+    "promoTitle": "Mã giảm giá",
+    "promoPlaceholder": "Nhập mã (WELCOME10 / DN20)",
+    "apply": "Áp dụng",
+    "promoApplied": "Đã áp dụng {{code}} (−{{value}})",
+    "promoInvalid": "Mã giảm giá không hợp lệ",
+    "currencyMismatchTitle": "Giỏ hàng có nhiều loại tiền",
+    "currencyMismatchDesc": "Thanh toán chỉ hỗ trợ một loại tiền mỗi lần. Vui lòng xóa sản phẩm dùng loại tiền khác.",
     "clear": "Xóa hết",
     "checkout": "Thanh toán",
     "checkoutHint": "Thanh toán sẽ gửi giỏ hàng tới bot."

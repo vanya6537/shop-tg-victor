@@ -14,7 +14,10 @@
     "clearedTitle": "Корзина очищена",
     "clearedMessage": "Корзина теперь пуста",
     "checkoutTitle": "Оформление",
-    "checkoutMessage": "Заполните форму, чтобы отправить заказ"
+    "checkoutMessage": "Сейчас уточним детали и подтвердим заказ.",
+    "promoAppliedTitle": "Промокод применён",
+    "promoAppliedMessage": "Код {{code}} активирован",
+    "promoInvalidTitle": "Промокод не применён"
   },
   "nav": {
     "home": "Главная",
@@ -52,7 +55,20 @@
     "remove": "Удалить",
     "decreaseQty": "Уменьшить количество",
     "increaseQty": "Увеличить количество",
-    "subtotal": "Итого",
+    "subtotal": "Промежуточный итог",
+    "discount": "Скидка",
+    "shipping": "Доставка",
+    "freeShipping": "Бесплатно",
+    "total": "Итого",
+    "unitPrice": "Цена за штуку:",
+    "lineTotal": "Сумма",
+    "promoTitle": "Промокод",
+    "promoPlaceholder": "Введите код (WELCOME10 / DN20)",
+    "apply": "Применить",
+    "promoApplied": "Применён {{code}} (−{{value}})",
+    "promoInvalid": "Промокод недействителен",
+    "currencyMismatchTitle": "Разные валюты в корзине",
+    "currencyMismatchDesc": "Оформление заказа возможно только в одной валюте. Удалите товары с другой валютой.",
     "clear": "Очистить",
     "checkout": "Оформить",
     "checkoutHint": "Оформление отправит корзину боту."
