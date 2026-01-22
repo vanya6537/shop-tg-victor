@@ -9,7 +9,6 @@ import { ToastProvider } from './lib/toast';
 function AppInner() {
   const cart = useCart();
   const [cartOpen, setCartOpen] = useState(false);
-  const [isAdminView, setIsAdminView] = useState(false);
   
   const handleLanguageChange = (_lang: string) => {
     // i18n change handled inside Header; this is kept for API compatibility
@@ -20,9 +19,19 @@ function AppInner() {
     el?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Check if admin panel should be shown via URL hash
-  if (typeof window !== 'undefined' && window.location.hash === '#admin') {
-    return <AdminPanel />;
+  // Check if admin panel should be shown via URL hash/query or Telegram WebApp start_param
+  if (typeof window !== 'undefined') {
+    const isAdminHash = window.location.hash === '#admin';
+    const params = new URLSearchParams(window.location.search);
+    const adminParam = params.get('admin');
+    const isAdminQuery = adminParam === '1' || adminParam === 'true' || adminParam === 'yes';
+
+    const tgStartParam = (window as any)?.Telegram?.WebApp?.initDataUnsafe?.start_param as string | undefined;
+    const isAdminStartParam = typeof tgStartParam === 'string' && tgStartParam.toLowerCase().startsWith('admin');
+
+    if (isAdminHash || isAdminQuery || isAdminStartParam) {
+      return <AdminPanel />;
+    }
   }
 
   return (

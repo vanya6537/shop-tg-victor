@@ -12,6 +12,33 @@ const WEBAPP_URL = process.env.WEBAPP_URL || 'https://flowhammer.shop';
 const ORDERS_CHANNEL_ID = -5010977237; // ID канала для заказов
 const ADMIN_IDS = (process.env.ADMIN_IDS || '').split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id)) || [];
 
+// Build safe WebApp links (works if WEBAPP_URL has/doesn't have query/hash)
+const buildWebAppUrl = (baseUrl, { hash, query } = {}) => {
+  try {
+    const url = new URL(baseUrl);
+    if (query && typeof query === 'object') {
+      for (const [k, v] of Object.entries(query)) {
+        if (v === undefined || v === null) continue;
+        url.searchParams.set(k, String(v));
+      }
+    }
+    if (typeof hash === 'string') {
+      url.hash = hash.startsWith('#') ? hash : `#${hash}`;
+    }
+    return url.toString();
+  } catch {
+    // Fallback for invalid URLs: keep existing behavior
+    let u = String(baseUrl || '');
+    if (query && query.admin) {
+      u += (u.includes('?') ? '&' : '?') + `admin=${encodeURIComponent(String(query.admin))}`;
+    }
+    if (hash) u += String(hash).startsWith('#') ? String(hash) : `#${hash}`;
+    return u;
+  }
+};
+
+const ADMIN_WEBAPP_URL = buildWebAppUrl(WEBAPP_URL, { query: { admin: 1 }, hash: 'admin' });
+
 // Проверяем наличие BOT_TOKEN
 if (!BOT_TOKEN) {
   console.error('❌ Ошибка: BOT_TOKEN не найден в .env файле!');
@@ -186,7 +213,7 @@ bot.on('channel_post', (msg) => {
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
   const lang = getLanguageForUser(msg.from);
-  const adminUser = isAdmin(msg.from);
+  const adminUser = isAdmin(msg.from) || ADMIN_IDS.includes(msg.from.id);
   
   // Кнопки выбора языка
   const languageKeyboard = {
@@ -218,7 +245,7 @@ bot.onText(/\/start/, (msg) => {
         // Добавляем админ кнопку если пользователь администратор
         ...(adminUser ? [[{
           text: '🔐 ' + (lang === 'ru' ? 'Админ-Панель' : lang === 'vi' ? 'Bảng Điều Khiển' : 'Admin Panel'),
-          web_app: { url: `${WEBAPP_URL}#admin` }
+          web_app: { url: ADMIN_WEBAPP_URL }
         }]] : [])
       ],
       resize_keyboard: true
@@ -259,7 +286,10 @@ bot.onText(/\/start/, (msg) => {
   bot.sendMessage(chatId, 
     t(lang, 'start.title') + '\n\n' +
     t(lang, 'start.description') +
-    (adminUser ? '\n\n👑 *Административный режим активирован*' : ''), 
+    (adminUser
+      ? '\n\n👑 *Административный режим активирован*\n' +
+        '🔐 ' + (lang === 'ru' ? 'Админ-ссылка' : lang === 'vi' ? 'Liên kết admin' : 'Admin link') + ': ' + ADMIN_WEBAPP_URL
+      : ''), 
     inlineKeyboard
   );
   
@@ -767,7 +797,7 @@ bot.on('callback_query', (query) => {
       // Проверяем админ-меню
       if (query.data === 'admin_menu') {
         const lang = getLanguageForUser(query.from);
-        if (!isAdmin(query.from)) {
+        if (!(isAdmin(query.from) || ADMIN_IDS.includes(query.from.id))) {
           bot.answerCallbackQuery(query.id, { text: '❌ Access Denied', show_alert: true });
           return;
         }
@@ -780,7 +810,7 @@ bot.on('callback_query', (query) => {
           '📋 /admin-dashboard - панель управления\n' +
           '📈 /admin-stats - статистика и аналитика\n' +
           '📦 /orders - все заказы\n' +
-          '🌐 Веб-панель: ' + WEBAPP_URL + '#admin\n\n' +
+          '🌐 Веб-панель: ' + ADMIN_WEBAPP_URL + '\n\n' +
           '💡 *Подсказка:* используйте веб-панель для полного контроля\n' +
           'Откройте в браузере ↓' :
           lang === 'vi' ?
@@ -790,7 +820,7 @@ bot.on('callback_query', (query) => {
           '📋 /admin-dashboard - bảng điều khiển\n' +
           '📈 /admin-stats - thống kê và phân tích\n' +
           '📦 /orders - tất cả đơn hàng\n' +
-          '🌐 Web Panel: ' + WEBAPP_URL + '#admin\n\n' +
+          '🌐 Web Panel: ' + ADMIN_WEBAPP_URL + '\n\n' +
           '💡 *Mẹo:* sử dụng web panel để kiểm soát hoàn toàn\n' +
           'Mở trong trình duyệt ↓' :
           '👑 *ADMIN MENU*\n\n' +
@@ -799,7 +829,7 @@ bot.on('callback_query', (query) => {
           '📋 /admin-dashboard - management panel\n' +
           '📈 /admin-stats - statistics and analytics\n' +
           '📦 /orders - all orders\n' +
-          '🌐 Web Panel: ' + WEBAPP_URL + '#admin\n\n' +
+          '🌐 Web Panel: ' + ADMIN_WEBAPP_URL + '\n\n' +
           '💡 *Tip:* use web panel for full control\n' +
           'Open in browser ↓';
         
@@ -809,7 +839,7 @@ bot.on('callback_query', (query) => {
               [
                 {
                   text: '🔐 ' + (lang === 'ru' ? 'Открыть Веб-Панель' : lang === 'vi' ? 'Mở Bảng Web' : 'Open Web Panel'),
-                  web_app: { url: `${WEBAPP_URL}#admin` }
+                  web_app: { url: ADMIN_WEBAPP_URL }
                 }
               ]
             ]
