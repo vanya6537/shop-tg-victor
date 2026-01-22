@@ -1,0 +1,271 @@
+FLOWHMMER SHOP - PROPRIETARY LICENSE
+=====================================
+
+Version 1.0 | January 23, 2026
+
+---
+
+## Copyright & Rights
+
+All rights reserved © 2026 FlowHammer Shop
+
+This software and all associated documentation, code, assets, and materials are the exclusive 
+property of FlowHammer Shop and its creators. Unauthorized use, reproduction, or distribution 
+is strictly prohibited.
+
+---
+
+## Grant of Rights
+
+Subject to compliance with the terms and conditions of this License, FlowHammer Shop grants you 
+a limited, non-exclusive, non-transferable, revocable right to:
+
+1. **PERSONAL USE ONLY**
+   - View and study the source code for educational purposes
+   - Run the software on your own computer for personal, non-commercial use
+   - Create copies for personal backup purposes
+
+2. **PERMITTED USES**
+   - Educational purposes (learning, teaching, research)
+   - Personal projects without commercial intent
+   - Non-commercial demonstration
+
+---
+
+## RESTRICTIONS - COMMERCIAL USE PROHIBITED
+
+You are STRICTLY PROHIBITED from:
+
+### ❌ Commercial Activities
+- Selling or offering the software for sale
+- Licensing the software to third parties
+- Using the software in any commercial business or venture
+- Charging any fee for the software or its derivatives
+- Using the software to provide commercial services
+- Operating the software as a service (SaaS) for profit
+- Incorporating the software into commercial products
+
+### ❌ Unauthorized Distribution
+- Distributing, sharing, or uploading the software to public repositories
+- Sharing the source code without explicit written permission
+- Providing the software to competitors or rivals
+- Redistributing the software in any form (modified or unmodified)
+- Releasing the software under a different license
+
+### ❌ Modification & Derivative Works
+- Creating derivative works from this software
+- Modifying the code for commercial use
+- Reverse engineering the software for commercial purposes
+- Using modified versions commercially
+- Sublicensing or selling modifications
+
+### ❌ Unauthorized Removal
+- Removing or altering copyright notices
+- Removing license information
+- Removing proprietary markings
+- Obscuring the original authorship
+
+### ❌ Other Prohibited Uses
+- Using for competing business purposes
+- Using in production environments for profit
+- Using on behalf of third parties for commercial gain
+- Using to develop competing products
+- Using without proper attribution and permission
+
+---
+
+## Commercial Use Requirements
+
+If you wish to use this software for commercial purposes, you MUST:
+
+1. **Obtain Written Permission**
+   - Contact: licensing@flowhammer.shop
+   - Submit a formal request detailing your intended use
+   - Wait for explicit written approval from FlowHammer Shop
+
+2. **Execute a Commercial License Agreement**
+   - Negotiate and sign a separate commercial license agreement
+   - Comply with all terms specified in the commercial license
+   - Pay applicable licensing fees (if required)
+
+3. **Attribution Requirements**
+   - Prominently display that the software is from FlowHammer Shop
+   - Include all copyright notices
+   - Link to the official FlowHammer Shop website
+
+---
+
+## Educational & Non-Commercial License
+
+This Educational Non-Commercial License permits:
+
+✅ Reading and studying the code  
+✅ Learning software development concepts  
+✅ Personal experimentation  
+✅ Teaching others (without commercial intent)  
+✅ Research purposes in academic settings  
+✅ Creating forks for educational purposes (private, not public)  
+
+---
+
+## Intellectual Property
+
+All intellectual property rights in the software are retained by FlowHammer Shop, including:
+
+- Source code and object code
+- Documentation and comments
+- Architecture and design patterns
+- User interface design
+- Database schemas
+- Algorithms and logic
+- Algorithms, trade secrets, and know-how
+- Any derivative works or improvements
+
+---
+
+## NO WARRANTIES
+
+THIS SOFTWARE IS PROVIDED "AS-IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, 
+AND NONINFRINGEMENT.
+
+FLOWHMMER SHOP SHALL NOT BE LIABLE FOR ANY DAMAGES, INCLUDING DIRECT, INDIRECT, INCIDENTAL, 
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES ARISING OUT OF OR IN CONNECTION WITH THIS 
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THIS SOFTWARE.
+
+---
+
+## NO SUPPORT
+
+FlowHammer Shop provides NO formal support, maintenance, updates, or bug fixes for this software. 
+The software is provided on an as-is basis without any obligation to update or maintain it.
+
+---
+
+## Confidentiality
+
+You agree to treat this software as confidential and proprietary information. You will not 
+disclose the software to any third party without prior written consent from FlowHammer Shop.
+
+---
+
+## Termination
+
+This license is effective until terminated. Your rights under this license will terminate 
+automatically without notice if you fail to comply with any term(s) of this License.
+
+Upon termination:
+- You must immediately cease using the software
+- You must destroy all copies in your possession
+- You must delete all modified versions
+
+---
+
+## Admins & Special Access
+
+The following users have special administrative access for testing and development purposes:
+- @QValmont
+- @netslayer
+
+These users are authorized to access and test the software for internal purposes only. 
+They remain bound by these license terms.
+
+---
+
+## Third-Party Components
+
+This software may include third-party libraries and components. Please refer to their 
+respective licenses for usage terms:
+
+- React (MIT License)
+- Node.js (MIT License)
+- Telegram Bot API (Telegram Terms of Service)
+- Tailwind CSS (MIT License)
+- Framer Motion (MIT License)
+- SQLite (Public Domain)
+- And other dependencies as listed in package.json
+
+Third-party components are subject to their respective licenses. This proprietary license 
+does not override any open-source licenses of included dependencies.
+
+---
+
+## Governing Law
+
+This License shall be governed by and construed in accordance with the laws of Vietnam, 
+without regard to its conflict of laws principles.
+
+---
+
+## Entire Agreement
+
+This License constitutes the entire agreement between you and FlowHammer Shop with respect 
+to the subject matter hereof and supersedes all prior negotiations, representations, and 
+agreements, whether written or oral.
+
+---
+
+## Amendment
+
+FlowHammer Shop reserves the right to amend this License at any time. Amendments become 
+effective upon posting to the repository. Your continued use of the software after any 
+amendment constitutes acceptance of the amended terms.
+
+---
+
+## Severability
+
+If any provision of this License is found to be invalid, illegal, or unenforceable, the 
+remaining provisions shall remain in full force and effect.
+
+---
+
+## Contact & Licensing Inquiries
+
+For licensing inquiries, commercial use permissions, or other questions:
+
+📧 Email:           licensing@flowhammer.shop
+💬 Telegram:        @VictorFlowHammer
+🌐 Website:         https://flowhammer.shop
+💼 Business:        business@flowhammer.shop
+
+---
+
+## Acknowledgment
+
+BY USING THIS SOFTWARE, YOU ACKNOWLEDGE THAT YOU HAVE READ THIS LICENSE, 
+UNDERSTAND ITS TERMS, AND AGREE TO BE BOUND BY THEM.
+
+If you do not agree with these terms, DO NOT USE THIS SOFTWARE.
+
+---
+
+**Last Updated:** January 23, 2026  
+**Version:** 1.0  
+**Status:** ACTIVE
+
+© 2026 FlowHammer Shop. All Rights Reserved. ™
+
+---
+
+## Quick Reference
+
+| Permission | Allowed |
+|-----------|---------|
+| Personal use | ✅ |
+| Educational use | ✅ |
+| Learning/Research | ✅ |
+| Viewing source code | ✅ |
+| Personal backup | ✅ |
+| | |
+| Commercial use | ❌ |
+| Selling software | ❌ |
+| Using as service | ❌ |
+| Public redistribution | ❌ |
+| Modifying commercially | ❌ |
+| Removing copyright | ❌ |
+| Using for profit | ❌ |
+
+---
+
+For a commercial license, contact: licensing@flowhammer.shop
