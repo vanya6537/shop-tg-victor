@@ -8,7 +8,7 @@ const { getDashboardStats, formatStatsMessage, exportOrdersToCSV, getCustomerDet
 
 // Загружаем переменные окружения из .env файла
 const BOT_TOKEN = process.env.BOT_TOKEN;
-const WEBAPP_URL = process.env.WEBAPP_URL || 'https://science-show.example.com';
+const WEBAPP_URL = process.env.WEBAPP_URL || 'https://flowhammer.shop';
 const ORDERS_CHANNEL_ID = -5010977237; // ID канала для заказов
 const ADMIN_IDS = (process.env.ADMIN_IDS || '').split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id)) || [];
 
@@ -59,7 +59,7 @@ const logMessage = (msg) => {
   }
 };
 
-console.log('🤖 Flow Hammer Shop Bot запущен...');
+console.log('🔨 FlowHammer Shop Bot запущен...');
 
 // Получаем информацию о боте
 bot.getMe().then((me) => {

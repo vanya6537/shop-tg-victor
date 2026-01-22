@@ -106,7 +106,7 @@ export const Footer = () => {
                 </motion.a>
               ))}
               <motion.a
-                href="https://t.me/science_show_dnang_bot"
+                href="https://t.me/FlowHammerBot"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ 

@@ -15,7 +15,7 @@ npm install
 
 ```env
 BOT_TOKEN=your_bot_token_here
-WEBAPP_URL=https://science-show.example.com
+WEBAPP_URL=https://flowhammer.shop
 ```
 
 ## Запуск

@@ -1,5 +1,5 @@
 {
-  "name": "science-show-telegram-bot",
+  "name": "flowhammer-shop-telegram-bot",
   "version": "1.0.0",
   "description": "Telegram bot for FlowHammer Da Nang",
   "main": "index.js",
@@ -10,7 +10,7 @@
   "keywords": [
     "telegram",
     "bot",
-    "science-show"
+    "flowhammer-shop"
   ],
   "author": "Viktor Valmont",
   "license": "MIT",
