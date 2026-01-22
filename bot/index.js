@@ -285,7 +285,7 @@ bot.onText(/\/products/, (msg) => {
   // Send helmet cover image - try with a simpler approach
   console.log('📸 Отправляю фото товара...');
   try {
-    // Using a working public image URL https://i.ibb.co/mrBvbTL5/2026-01-23-03-55-03.jpg
+    // Using the real helmet cover image
     const helmetImageUrl = 'https://i.ibb.co/mrBvbTL5/2026-01-23-03-55-03.jpg';
     bot.sendPhoto(chatId, helmetImageUrl, {
       caption: '🧸 *Character Helmet Cover - Стиль & Защита*\n💙 Милый дизайн | ✨ Высокое качество\n🏍️ Для мотоциклистов | 💰 8.99$',
