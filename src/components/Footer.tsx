@@ -52,10 +52,10 @@ export const Footer = () => {
             </h3>
             <ul className="space-y-2 opacity-80 font-semibold">
               <li 
-                onClick={() => handleCopy('viktorvalmontshow@gmail.com', 'email')}
+                onClick={() => handleCopy('hello@flowhammer.shop', 'email')}
                 className="cursor-pointer hover:text-neon-green transition-all duration-200 flex items-center gap-2 hover:gap-3"
               >
-                📧 {copiedText === 'email' ? `✅ ${t('footer.copied')}` : 'viktorvalmontshow@gmail.com'}
+                📧 {copiedText === 'email' ? `✅ ${t('footer.copied')}` : 'hello@flowhammer.shop'}
               </li>
               <li 
                 onClick={() => handleCopy('+84 949197496', 'phone')}

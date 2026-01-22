@@ -123,7 +123,7 @@ export const CartDrawer = ({
                     className="mt-4 w-full px-4 py-3 rounded-xl bg-white text-neon-darker font-black"
                     onClick={() => {
                       onClose();
-                      const el = document.getElementById('products') ?? document.getElementById('shows');
+                      const el = document.getElementById('products');
                       el?.scrollIntoView({ behavior: 'smooth' });
                     }}
                   >

@@ -426,7 +426,7 @@ bot.onText(/\/book/, (msg) => {
       keyboard: [
         [
           {
-            text: '📋 Забронировать Шоу',
+            text: '📋 Заказать Сейчас',
             web_app: { url: `${WEBAPP_URL}#booking` }
           }
         ]
@@ -642,10 +642,10 @@ bot.on('callback_query', (query) => {
       }
       break;
       
-    case 'shows_info':
-      console.log('✅ Обработка: shows_info');
+    case 'products_info':
+      console.log('✅ Обработка: products_info');
       bot.answerCallbackQuery(query.id);
-      const showsMessage = 
+      const productsInfoMsg = 
         '🛍️ *ТРИ ЗВЕЗДЫ НАШЕГО МАГАЗИНА*\n\n' +
         '━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' +
         '🧊 *КОМПАКТНАЯ: Mini Pocket (12.99$)* — 10 см\n' +
@@ -659,7 +659,7 @@ bot.on('callback_query', (query) => {
         '✅ Первый заказ: промокод WELCOME10 = −10%\n' +
         '✅ Доставка бесплатна от 50$';
       console.log('📤 Отправляю информацию о товарах...');
-      bot.sendMessage(chatId, showsMessage, { parse_mode: 'Markdown' })
+      bot.sendMessage(chatId, productsInfoMsg, { parse_mode: 'Markdown' })
         .then(() => console.log('✅ Сообщение о товарах отправлено'))
         .catch(err => console.error('❌ Ошибка отправки:', err));
       break;
@@ -691,7 +691,7 @@ bot.on('callback_query', (query) => {
         .catch(err => console.error('❌ Ошибка отправки:', err));
       break;
       
-    case 'book_show':
+    case 'book_order':
       bot.answerCallbackQuery(query.id, { text: '� Откроется форма заказа...' });
       const bookingKeyboard = {
         reply_markup: {
