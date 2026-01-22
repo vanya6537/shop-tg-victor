@@ -76,7 +76,9 @@ export const Footer = () => {
             <h3 className="text-2xl font-black text-neon-green mb-4">{t('footer.followUs')}</h3>
             <div className="flex gap-4 flex-wrap">
               <motion.button
-                onClick={() => window.location.href = '/#admin'}
+                onClick={() => {
+                  window.location.hash = '#admin';
+                }}
                 whileHover={{ 
                   scale: 1.3,
                   textShadow: '0 0 15px rgba(138, 43, 226, 0.8)',

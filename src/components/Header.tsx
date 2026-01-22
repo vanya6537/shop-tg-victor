@@ -78,7 +78,10 @@ export const Header = ({ onLanguageChange, cartCount, onOpenCart }: NavProps) =>
             <motion.button
               whileHover={{ scale: 1.08 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => window.location.href = '/#admin'}
+              onClick={() => {
+                window.location.hash = '#admin';
+                setMobileMenuOpen(false);
+              }}
               className="flex px-2 sm:px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 bg-purple-600/20 text-purple-300 border border-purple-500/50 hover:bg-purple-600/40 hover:text-purple-200 items-center gap-1"
               title="Admin Panel (requires login)"
               aria-label="Admin Panel"

@@ -2,6 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 const ADMIN_USERNAMES = ['QValmont', 'netslayer'];
+const ADMIN_USER_IDS: number[] = (() => {
+  const fromEnv = (import.meta as any)?.env?.VITE_ADMIN_USER_IDS as string | undefined;
+  if (!fromEnv) return [];
+  return fromEnv
+    .split(',')
+    .map((v) => v.trim())
+    .filter(Boolean)
+    .map((v) => Number(v))
+    .filter((n) => Number.isSafeInteger(n));
+})();
+
+const isAuthorizedAdmin = (value: string) => {
+  const normalized = value.trim().replace(/^@/, '');
+  if (!normalized) return false;
+  if (ADMIN_USERNAMES.includes(normalized)) return true;
+
+  if (/^\d+$/.test(normalized)) {
+    const asId = Number(normalized);
+    return Number.isSafeInteger(asId) && ADMIN_USER_IDS.includes(asId);
+  }
+
+  return false;
+};
+
+const getTelegramUser = () => {
+  const w = window as any;
+  return w?.Telegram?.WebApp?.initDataUnsafe?.user as { id?: number; username?: string } | undefined;
+};
 
 export default function AdminPanel() {
   const [adminUsername, setAdminUsername] = useState('');
@@ -14,7 +42,7 @@ export default function AdminPanel() {
 
   // Mock authentication check (in real app, would validate with backend)
   const handleLogin = () => {
-    if (ADMIN_USERNAMES.includes(adminUsername)) {
+    if (isAuthorizedAdmin(adminUsername)) {
       setIsAuthenticated(true);
       loadDashboardData();
     } else {
@@ -75,6 +103,22 @@ export default function AdminPanel() {
     setOrders(mockOrders);
     calculateStats(mockOrders);
   };
+
+  useEffect(() => {
+    const tgUser = getTelegramUser();
+    if (!tgUser) return;
+
+    const fallbackValue = tgUser.username ? tgUser.username : typeof tgUser.id === 'number' ? String(tgUser.id) : '';
+    if (fallbackValue) setAdminUsername(fallbackValue);
+
+    const isAllowedById = typeof tgUser.id === 'number' && ADMIN_USER_IDS.includes(tgUser.id);
+    const isAllowedByUsername = !!tgUser.username && ADMIN_USERNAMES.includes(tgUser.username);
+
+    if (isAllowedById || isAllowedByUsername) {
+      setIsAuthenticated(true);
+      loadDashboardData();
+    }
+  }, []);
 
   const calculateStats = (orderList) => {
     const totalRevenue = orderList.reduce((sum, order) => sum + order.subtotal, 0);
@@ -156,7 +200,7 @@ export default function AdminPanel() {
                 type="text"
                 value={adminUsername}
                 onChange={(e) => setAdminUsername(e.target.value)}
-                placeholder="e.g., QValmont or netslayer"
+                placeholder="Username or Telegram user id"
                 className="w-full px-4 py-2 bg-gray-800 border border-purple-500 rounded text-white placeholder-gray-500 focus:outline-none focus:border-pink-500"
                 onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
               />
@@ -170,7 +214,7 @@ export default function AdminPanel() {
             </button>
             
             <p className="text-xs text-gray-400 text-center mt-4">
-              ✅ Authorized users: @QValmont, @netslayer
+              ✅ Authorized: username list or Telegram user id (set `VITE_ADMIN_USER_IDS`)
             </p>
           </div>
         </div>
