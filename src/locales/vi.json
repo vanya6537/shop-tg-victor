@@ -1,0 +1,242 @@
+{
+  "brand": {
+    "name": "Wellness Shop"
+  },
+  "common": {
+    "close": "Đóng"
+  },
+  "toast": {
+    "addedTitle": "Đã thêm vào giỏ",
+    "addedMessage": "Đã thêm: {{name}}",
+    "addedQtyMessage": "Đã thêm {{qty}} × {{name}}",
+    "removedTitle": "Đã xóa",
+    "removedMessage": "Đã xóa: {{name}}",
+    "clearedTitle": "Đã xóa giỏ",
+    "clearedMessage": "Giỏ hàng hiện đang trống",
+    "checkoutTitle": "Thanh toán",
+    "checkoutMessage": "Điền form để gửi đơn hàng"
+  },
+  "nav": {
+    "home": "Trang Chủ",
+    "products": "Sản Phẩm",
+    "about": "Về Chúng Tôi",
+    "contact": "Liên Hệ"
+  },
+  "shop": {
+    "title": "Cửa hàng",
+    "subtitle": "Que massage và áo/che mũ bảo hiểm — thêm vào giỏ chỉ trong vài giây.",
+    "searchPlaceholder": "Tìm sản phẩm…",
+    "sort": {
+      "featured": "Nổi bật",
+      "priceAsc": "Giá: thấp đến cao",
+      "priceDesc": "Giá: cao đến thấp"
+    },
+    "categories": {
+      "all": "Tất cả"
+    },
+    "viewDetails": "Chi tiết",
+    "addToCart": "Thêm vào giỏ",
+    "testCatalogNote": "Danh mục demo: hình ảnh được tạo tự động (placeholder).",
+    "testProductNote": "Sản phẩm demo: mô tả và hình ảnh chỉ là placeholder."
+  },
+  "cart": {
+    "open": "Mở giỏ hàng",
+    "title": "Giỏ hàng của bạn",
+    "items_one": "{{count}} sản phẩm",
+    "items_other": "{{count}} sản phẩm",
+    "emptyTitle": "Giỏ hàng đang trống",
+    "emptyDesc": "Thêm vài sản phẩm và thanh toán qua Telegram.",
+    "continueShopping": "Xem sản phẩm",
+    "remove": "Xóa",
+    "decreaseQty": "Giảm số lượng",
+    "increaseQty": "Tăng số lượng",
+    "subtotal": "Tạm tính",
+    "clear": "Xóa hết",
+    "checkout": "Thanh toán",
+    "checkoutHint": "Thanh toán sẽ gửi giỏ hàng tới bot."
+  },
+  "products": {
+    "categories": {
+      "massage": "Que massage",
+      "helmet": "Áo/che mũ bảo hiểm"
+    },
+    "items": {
+      "stick-acupressure-pro": {
+        "name": "Que massage bấm huyệt Pro",
+        "short": "Tác động đúng điểm, giảm căng sâu, cầm chắc tay.",
+        "details": "Que bấm huyệt chắc chắn cho các điểm đau (trigger points) và thư giãn cơ mỗi ngày. Phù hợp cổ, vai, lưng, chân — dùng 5–10 phút/ngày.",
+        "f1": "Nhựa ABS bền + đầu silicone mềm",
+        "f2": "Tay cầm chống trượt, dễ thao tác",
+        "f3": "Hướng dẫn kỹ thuật nhanh"
+      },
+      "stick-therapy-ergonomic": {
+        "name": "Que massage trị liệu (ergonomic)",
+        "short": "Thiết kế cong cho vai, bắp chân và lưng dưới.",
+        "details": "Thiết kế ergonomic giúp kiểm soát lực tốt. Hỗ trợ giảm cứng cơ sau tập luyện hoặc ngồi lâu.",
+        "f1": "Đầu cong dễ chạm vùng khó",
+        "f2": "Nhẹ, tiện mang theo",
+        "f3": "Dễ vệ sinh và cất giữ"
+      },
+      "roller-fascia-360": {
+        "name": "Que lăn fascia 360°",
+        "short": "Lăn mượt giúp phục hồi và cải thiện tuần hoàn.",
+        "details": "Que lăn 360° hỗ trợ thả lỏng fascia và dùng cho khởi động/hạ nhiệt. Êm ái cho chân, tay và lưng.",
+        "f1": "Lõi lăn 360° trơn mượt",
+        "f2": "Dùng tốt cho chân, tay, lưng",
+        "f3": "Phù hợp khởi động & phục hồi"
+      },
+      "stick-mini-pocket": {
+        "name": "Que massage mini bỏ túi",
+        "short": "Gọn nhẹ giảm căng mọi nơi — văn phòng, du lịch, phòng tập.",
+        "details": "Nhỏ nhưng hiệu quả. Mang theo trong túi và giải tỏa căng cơ bất cứ khi nào cần.",
+        "f1": "Kích thước bỏ túi, siêu nhẹ",
+        "f2": "Viền bo tròn êm dịu",
+        "f3": "Lý tưởng cho mini-session mỗi ngày"
+      },
+      "helmet-cover-breathable": {
+        "name": "Áo/che mũ bảo hiểm thoáng khí",
+        "short": "Mềm, giặt được, thoải mái khi ra mồ hôi.",
+        "details": "Lớp che thoáng khí giúp mũ luôn sạch thoáng. Phù hợp đi hằng ngày và thời tiết nóng.",
+        "f1": "Vải thoáng khí",
+        "f2": "Giặt máy được",
+        "f3": "Phù hợp đa số kiểu mũ"
+      },
+      "helmet-cover-rainproof": {
+        "name": "Áo/che mũ bảo hiểm chống mưa",
+        "short": "Giữ mũ khô ráo khi trời mưa.",
+        "details": "Lớp che chống thấm nhẹ cho ngày mưa. Hỗ trợ bảo vệ mũ và giữ vệ sinh.",
+        "f1": "Phủ chống thấm",
+        "f2": "Dải phản quang tăng an toàn",
+        "f3": "Dây rút ôm vừa"
+      },
+      "helmet-cover-thermal": {
+        "name": "Áo/che mũ bảo hiểm giữ ấm",
+        "short": "Lót ấm cho thời tiết se lạnh.",
+        "details": "Lớp giữ ấm giúp thoải mái khi trời lạnh. Phù hợp sáng sớm và tối.",
+        "f1": "Lót fleece giữ ấm",
+        "f2": "Lớp ngoài cản gió",
+        "f3": "Thiết kế thân thiện vùng tai"
+      },
+      "helmet-cover-style": {
+        "name": "Áo/che mũ bảo hiểm thời trang",
+        "short": "Màu sắc nổi bật, gọn gàng, dễ tháo/lắp.",
+        "details": "Thêm chút phong cách và bảo vệ mũ. Thao tác nhanh, tiện lợi.",
+        "f1": "Họa tiết nổi bật",
+        "f2": "Màu bền, hạn chế phai",
+        "f3": "Tháo/lắp nhanh"
+      }
+    }
+  },
+  "hero": {
+    "title": "Que Massage & Áo Bảo Vệ Mũ Bảo Hiểm Cao Cấp",
+    "subtitle": "Công cụ chất lượng cao cho sức khỏe và bảo vệ",
+    "neonSubtitle": "Thay đổi thói quen chăm sóc sức khỏe của bạn hôm nay",
+    "cta": "Đặt Hàng Ngay",
+    "offer": "KHUYẾN MÃI CÓ HẠN",
+    "offerDesc": "Miễn phí vận chuyển + GIẢM 20% cho đơn đầu tiên!",
+    "rating": "4.9 Đánh Giá",
+    "ratingDesc": "1000+ Nhận Xét",
+    "delivery": "Giao Hàng Nhanh",
+    "deliveryDesc": "2-3 Ngày",
+    "guarantee": "Bảo Hành",
+    "guaranteeDesc": "Hoàn Trả 30 Ngày",
+    "trusted": "1000+ Khách Hàng Tin Tưởng",
+    "tagline": "Giải pháp sức khỏe hàng đầu ngành"
+  },
+  "lightning": {
+    "colorLabel": "Màu: {{name}} ({{hex}})",
+    "degrees": "{{value}}°",
+    "hintSwipe": "Mẹo: kéo hoặc vuốt để chỉnh",
+    "wishes": [
+      "Chúc sức khỏe của bạn cải thiện với mỗi lần massage.",
+      "Chúc sự giải tỏa đến nhanh và kéo dài lâu.",
+      "Chúc mỗi cơ thể thư giãn hoàn hảo.",
+      "Chúc đau đi mất, niềm vui còn lại.",
+      "Chúc bạn cảm thấy sự khác biệt ngay lập tức.",
+      "Chúc đầu bạn luôn được bảo vệ.",
+      "Chúc sức khỏe trở thành thói quen hàng ngày.",
+      "Chúc phục hồi mịn màng và tự nhiên.",
+      "Chúc những công cụ này phục vụ bạn tốt.",
+      "Chúc sự thoải mái luôn đi kèm với bạn.",
+      "Chúc cơ thể bạn cảm ơn bạn mỗi ngày.",
+      "Chúc sức khỏe và hạnh phúc tràn chảy cùng nhau."
+    ],
+    "colors": {
+      "red": "đỏ",
+      "orange": "cam",
+      "yellow": "vàng",
+      "green": "xanh lá",
+      "cyan": "xanh ngọc",
+      "blue": "xanh dương",
+      "violet": "tím",
+      "pink": "hồng"
+    }
+  },
+  "shows": {
+    "title": "Sản Phẩm Cao Cấp Của Chúng Tôi",
+    "book": "Đặt Hàng",
+    "interestedIn": "Quan tâm đến sản phẩm:",
+    "dryIce": "Que Massage Xoa Lỗ",
+    "dryIceDesc": "Thiết bị massage chuyên nghiệp với các điểm xoa lỗ truyền thống để giải phóng cơ sâu",
+    "liquidNitrogen": "Que Massage Trị Liệu",
+    "liquidNitrogenDesc": "Thiết kế ergonomic để massage cổ, vai và lưng với giảm căng hiệu quả",
+    "tesla": "Que Roller Chuyên Nghiệp",
+    "teslaDesc": "Công nghệ roller tiên tiến cho giải phóng fascia và tuần hoàn cải thiện",
+    "chemicalFire": "Áo Bảo Vệ Mũ Bảo Hiểm",
+    "chemicalFireDesc": "Áo bảo vệ bền chịu, thoáng khí cho tất cả các loại mũ bảo hiểm với thiết kế phong cách"
+  },
+  "booking": {
+    "title": "Sẵn Sàng Thay Đổi Sức Khỏe?",
+    "subtitle": "Điền vào biểu mẫu bên dưới và chúng tôi sẽ gửi cho bạn thông tin về sản phẩm của chúng tôi",
+    "name": "Tên của Bạn",
+    "email": "Địa Chỉ Email",
+    "date": "Ngày Liên Hệ Ưa Thích",
+    "guests": "Sở Thích Sản Phẩm",
+    "message": "Thông Tin Bổ Sung",
+    "submit": "Gửi Đơn Hàng",
+    "success": "Cảm ơn! Chúng tôi sẽ liên hệ sớm với thông tin sản phẩm.",
+    "validationRequired": "Vui lòng điền đầy đủ các trường bắt buộc",
+    "selectedDate": "Ngày đã chọn",
+    "placeholders": {
+      "name": "Tên của bạn...",
+      "email": "your@email.com",
+      "message": "Cho chúng tôi biết sản phẩm nào quan tâm bạn..."
+    },
+    "guestSingular": "sản phẩm",
+    "guestPlural": "sản phẩm"
+  },
+  "checkout": {
+    "subtitle": "Nhập liên hệ — chúng tôi sẽ gửi giỏ hàng tới bot",
+    "name": "Tên của bạn",
+    "contact": "Số điện thoại hoặc Email",
+    "note": "Ghi chú (tùy chọn)",
+    "yourCart": "Giỏ hàng",
+    "submit": "Gửi đơn",
+    "success": "Cảm ơn! Đơn đã được gửi.",
+    "validationRequired": "Vui lòng nhập tên và thông tin liên hệ",
+    "cartRequired": "Giỏ hàng trống — hãy thêm sản phẩm trước",
+    "placeholders": {
+      "name": "Tên của bạn…",
+      "contact": "+84… hoặc your@email.com",
+      "note": "Địa chỉ giao hàng, size, màu, hoặc câu hỏi…"
+    }
+  },
+  "about": {
+    "title": "Tại Sao Chọn Sản Phẩm Của Chúng Tôi",
+    "subtitle": "Thiết kế chuyên tâm: hiệu quả, bền bỏ và hoàn hảo cho thói quen chăm sóc sức khỏe hàng ngày.",
+    "bullets": {
+      "0": "Vật liệu chất lượng cao chịu đựng sử dụng hàng ngày và mang lại kết quả lâu dài.",
+      "1": "Phương pháp chứng minh từ liệu pháp truyền thống kết hợp với thiết kế hiện đại.",
+      "2": "Vận chuyển nhanh và hỗ trợ khách hàng tuyệt vời - sự hài lòng của bạn được đảm bảo."
+    }
+  },
+  "footer": {
+    "rights": "Tất cả quyền được bảo lưu",
+    "contact": "Liên hệ với chúng tôi",
+    "description": "Công cụ massage cao cấp và áo bảo vệ mũ bảo hiểm cho sức khỏe và bảo vệ.",
+    "copied": "Đã sao chép",
+    "location": "Việt Nam",
+    "followUs": "Theo dõi chúng tôi",
+    "openBotTitle": "Mở bot Telegram"
+  }
+}

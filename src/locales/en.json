@@ -1,0 +1,242 @@
+{
+  "brand": {
+    "name": "Wellness Shop"
+  },
+  "common": {
+    "close": "Close"
+  },
+  "toast": {
+    "addedTitle": "Added to cart",
+    "addedMessage": "{{name}} added",
+    "addedQtyMessage": "Added {{qty}} × {{name}}",
+    "removedTitle": "Removed",
+    "removedMessage": "{{name}} removed",
+    "clearedTitle": "Cart cleared",
+    "clearedMessage": "Your cart is now empty",
+    "checkoutTitle": "Checkout",
+    "checkoutMessage": "Fill the form to send your order"
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "shop": {
+    "title": "Shop",
+    "subtitle": "Massage sticks and helmet covers — add to cart in seconds.",
+    "searchPlaceholder": "Search products…",
+    "sort": {
+      "featured": "Featured",
+      "priceAsc": "Price: Low to High",
+      "priceDesc": "Price: High to Low"
+    },
+    "categories": {
+      "all": "All"
+    },
+    "viewDetails": "Details",
+    "addToCart": "Add to cart",
+    "testCatalogNote": "Demo catalog: images are generated placeholders.",
+    "testProductNote": "Demo item: details and images are placeholders."
+  },
+  "cart": {
+    "open": "Open cart",
+    "title": "Your cart",
+    "items_one": "{{count}} item",
+    "items_other": "{{count}} items",
+    "emptyTitle": "Your cart is empty",
+    "emptyDesc": "Add a couple of items and checkout in Telegram.",
+    "continueShopping": "Browse products",
+    "remove": "Remove",
+    "decreaseQty": "Decrease quantity",
+    "increaseQty": "Increase quantity",
+    "subtotal": "Subtotal",
+    "clear": "Clear",
+    "checkout": "Checkout",
+    "checkoutHint": "Checkout sends your cart to the bot."
+  },
+  "products": {
+    "categories": {
+      "massage": "Massage sticks",
+      "helmet": "Helmet covers"
+    },
+    "items": {
+      "stick-acupressure-pro": {
+        "name": "Acupressure Massage Stick Pro",
+        "short": "Target points, deep relief, easy grip.",
+        "details": "A firm acupressure stick designed for trigger points and daily muscle relief. Great for neck, shoulders, back, and legs — use 5–10 minutes a day.",
+        "f1": "Durable ABS + soft silicone tip",
+        "f2": "Non-slip ergonomic handle",
+        "f3": "Quick-start technique guide"
+      },
+      "stick-therapy-ergonomic": {
+        "name": "Therapy Stick Ergonomic",
+        "short": "Curved design for shoulders, calves, and lower back.",
+        "details": "Ergonomic stick for controlled pressure where you need it most. Helps reduce stiffness after workouts and long days.",
+        "f1": "Curved head reaches tight areas",
+        "f2": "Lightweight and travel-friendly",
+        "f3": "Easy to clean and store"
+      },
+      "roller-fascia-360": {
+        "name": "Fascia Roller 360°",
+        "short": "Smooth rolling for recovery and better circulation.",
+        "details": "360° roller stick for fascia release and warm-up/cool-down routines. Comfortable on legs, arms, and back.",
+        "f1": "360° rolling core for smooth glide",
+        "f2": "Works on legs, arms, and back",
+        "f3": "Great for warm-up & recovery"
+      },
+      "stick-mini-pocket": {
+        "name": "Mini Pocket Massage Stick",
+        "short": "Compact relief anywhere — office, travel, gym.",
+        "details": "Small but effective. Keep it in your bag and release tension whenever it shows up.",
+        "f1": "Pocket-size and lightweight",
+        "f2": "Gentle rounded edge",
+        "f3": "Ideal for daily micro-sessions"
+      },
+      "helmet-cover-breathable": {
+        "name": "Breathable Helmet Cover",
+        "short": "Soft, washable, sweat-friendly comfort.",
+        "details": "Breathable cover that helps keep your helmet fresh. Great for daily riding and hot weather.",
+        "f1": "Breathable fabric",
+        "f2": "Machine-washable",
+        "f3": "Fits most helmet shapes"
+      },
+      "helmet-cover-rainproof": {
+        "name": "Rainproof Helmet Cover",
+        "short": "Keep your helmet dry on rainy days.",
+        "details": "Water-repellent cover for wet weather. Helps protect your helmet and keeps things cleaner.",
+        "f1": "Water-repellent coating",
+        "f2": "Reflective strip for visibility",
+        "f3": "Drawstring fit"
+      },
+      "helmet-cover-thermal": {
+        "name": "Thermal Helmet Cover",
+        "short": "Warm lining for cool weather rides.",
+        "details": "Thermal layer helps keep you comfortable when temperatures drop. Great for early mornings and evening rides.",
+        "f1": "Thermal fleece lining",
+        "f2": "Wind-blocking outer layer",
+        "f3": "Ear-friendly cut"
+      },
+      "helmet-cover-style": {
+        "name": "Style Helmet Cover",
+        "short": "Bright designs, clean look, quick on/off.",
+        "details": "Add a bit of style while keeping your helmet protected. Easy to put on and take off.",
+        "f1": "Vibrant patterns",
+        "f2": "UV-resistant color",
+        "f3": "Quick on/off"
+      }
+    }
+  },
+  "hero": {
+    "title": "Premium Massage Sticks & Helmet Covers",
+    "subtitle": "High-quality tools for health and protection",
+    "neonSubtitle": "Transform your wellness routine today",
+    "cta": "Order Now",
+    "offer": "LIMITED TIME OFFER",
+    "offerDesc": "Free shipping + 20% OFF on your first order!",
+    "rating": "4.9 Rating",
+    "ratingDesc": "1000+ Reviews",
+    "delivery": "Fast Delivery",
+    "deliveryDesc": "2-3 Days",
+    "guarantee": "Guarantee",
+    "guaranteeDesc": "30-Day Return",
+    "trusted": "Trusted by 1000+ Customers",
+    "tagline": "Industry-leading wellness solutions"
+  },
+  "lightning": {
+    "colorLabel": "Color: {{name}} ({{hex}})",
+    "degrees": "{{value}}°",
+    "hintSwipe": "Tip: drag or swipe to adjust",
+    "wishes": [
+      "May your health improve with every massage.",
+      "May relief come quickly and last long.",
+      "May every muscle relax perfectly.",
+      "May pain disappear and joy remain.",
+      "May you feel the difference immediately.",
+      "May your head always stay protected.",
+      "May wellness become your daily habit.",
+      "May recovery be smooth and natural.",
+      "May these tools serve you well.",
+      "May comfort be your constant companion.",
+      "May your body thank you daily.",
+      "May health and happiness flow together."
+    ],
+    "colors": {
+      "red": "red",
+      "orange": "orange",
+      "yellow": "yellow",
+      "green": "green",
+      "cyan": "cyan",
+      "blue": "blue",
+      "violet": "violet",
+      "pink": "pink"
+    }
+  },
+  "shows": {
+    "title": "Our Premium Products",
+    "book": "Order Now",
+    "interestedIn": "Interested in product:",
+    "dryIce": "Acupressure Massage Stick",
+    "dryIceDesc": "Professional-grade massager with traditional acupressure points for deep muscle relief",
+    "liquidNitrogen": "Therapeutic Massage Stick",
+    "liquidNitrogenDesc": "Ergonomic design for neck, shoulder and back massage with effective tension relief",
+    "tesla": "Professional Roller Stick",
+    "teslaDesc": "Advanced roller technology for fascia release and improved circulation",
+    "chemicalFire": "Protective Helmet Covers",
+    "chemicalFireDesc": "Durable, breathable covers for all helmet types with stylish designs"
+  },
+  "booking": {
+    "title": "Ready to Transform Your Wellness?",
+    "subtitle": "Fill out the form below and we'll send you details about our products",
+    "name": "Your Name",
+    "email": "Email Address",
+    "date": "Preferred Contact Date",
+    "guests": "Product Interest",
+    "message": "Additional Details",
+    "submit": "Submit Order",
+    "success": "Thank you! We'll contact you soon with product details.",
+    "validationRequired": "Please fill in all required fields",
+    "selectedDate": "Selected date",
+    "placeholders": {
+      "name": "Your name...",
+      "email": "your@email.com",
+      "message": "Tell us which products interest you..."
+    },
+    "guestSingular": "product",
+    "guestPlural": "products"
+  },
+  "checkout": {
+    "subtitle": "Enter your contact and we’ll send the cart to the bot",
+    "name": "Your name",
+    "contact": "Phone or Email",
+    "note": "Note (optional)",
+    "yourCart": "Your cart",
+    "submit": "Send order",
+    "success": "Thanks! Your order was sent.",
+    "validationRequired": "Please enter your name and contact",
+    "cartRequired": "Your cart is empty — add products first",
+    "placeholders": {
+      "name": "Your name…",
+      "contact": "+84… or your@email.com",
+      "note": "Delivery address, size, color, or any questions…"
+    }
+  },
+  "about": {
+    "title": "Why Choose Our Products",
+    "subtitle": "Designed with care: effective, durable, and perfect for your daily wellness routine.",
+    "bullets": {
+      "0": "Premium quality materials that withstand daily use and deliver lasting results.",
+      "1": "Proven methods from traditional therapies combined with modern design.",
+      "2": "Fast shipping and excellent customer support — your satisfaction guaranteed."
+    }
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "contact": "Contact us",
+    "description": "Premium massage tools and helmet covers for health and protection.",
+    "copied": "Copied",
+    "location": "Vietnam",
+    "followUs": "Follow us",
+    "openBotTitle": "Open Telegram bot"
+  }
+}
