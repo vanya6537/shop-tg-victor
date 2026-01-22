@@ -23,7 +23,7 @@ export const Header = ({ onLanguageChange, cartCount, onOpenCart }: NavProps) =>
             whileHover={{ scale: 1.05, textShadow: '0 0 20px rgba(179, 0, 255, 0.8)' }}
             className="font-extrabold bg-gradient-to-r from-neon-blue via-neon-purple to-neon-green bg-clip-text text-transparent cursor-pointer flex items-center gap-2"
           >
-            <span style={{ fontSize: '1.8rem', display: 'inline-block' }}>💆</span>
+            <span style={{ fontSize: '1.8rem', display: 'inline-block' }}>�</span>
             {t('brand.name')}
           </motion.div>
 

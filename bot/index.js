@@ -563,6 +563,10 @@ bot.on('callback_query', (query) => {
       chat_id: chatId,
       message_id: query.message.message_id,
       parse_mode: 'Markdown'
+    }).catch(err => {
+      if (err.response?.body?.error_code !== 400) {
+        console.error('❌ Ошибка editMessageText:', err);
+      }
     });
     return;
   }
@@ -573,6 +577,10 @@ bot.on('callback_query', (query) => {
       chat_id: chatId,
       message_id: query.message.message_id,
       parse_mode: 'Markdown'
+    }).catch(err => {
+      if (err.response?.body?.error_code !== 400) {
+        console.error('❌ Ошибка editMessageText:', err);
+      }
     });
     return;
   }
@@ -583,6 +591,10 @@ bot.on('callback_query', (query) => {
       chat_id: chatId,
       message_id: query.message.message_id,
       parse_mode: 'Markdown'
+    }).catch(err => {
+      if (err.response?.body?.error_code !== 400) {
+        console.error('❌ Ошибка editMessageText:', err);
+      }
     });
     return;
   }
@@ -1360,12 +1372,19 @@ bot.on('callback_query', async (query) => {
         }
       };
       
-      await bot.editMessageText(message, {
-        chat_id: chatId,
-        message_id: query.message.message_id,
-        parse_mode: 'Markdown',
-        reply_markup: keyboard.reply_markup
-      });
+      try {
+        await bot.editMessageText(message, {
+          chat_id: chatId,
+          message_id: query.message.message_id,
+          parse_mode: 'Markdown',
+          reply_markup: keyboard.reply_markup
+        });
+      } catch (editErr) {
+        // Игнорируем ошибку "message is not modified" (код 400)
+        if (editErr.response?.body?.error_code !== 400) {
+          throw editErr;
+        }
+      }
     } else if (query.data === 'admin_stats') {
       await bot.answerCallbackQuery(query.id);
       const stats = await getDashboardStats();
@@ -1392,12 +1411,18 @@ bot.on('callback_query', async (query) => {
         }
       };
       
-      await bot.editMessageText(message, {
-        chat_id: chatId,
-        message_id: query.message.message_id,
-        parse_mode: 'Markdown',
-        reply_markup: keyboard.reply_markup
-      });
+      try {
+        await bot.editMessageText(message, {
+          chat_id: chatId,
+          message_id: query.message.message_id,
+          parse_mode: 'Markdown',
+          reply_markup: keyboard.reply_markup
+        });
+      } catch (editErr) {
+        if (editErr.response?.body?.error_code !== 400) {
+          throw editErr;
+        }
+      }
     } else if (query.data === 'admin_customers') {
       await bot.answerCallbackQuery(query.id);
       const stats = await getDashboardStats();
@@ -1418,12 +1443,18 @@ bot.on('callback_query', async (query) => {
         }
       };
       
-      await bot.editMessageText(message, {
-        chat_id: chatId,
-        message_id: query.message.message_id,
-        parse_mode: 'Markdown',
-        reply_markup: keyboard.reply_markup
-      });
+      try {
+        await bot.editMessageText(message, {
+          chat_id: chatId,
+          message_id: query.message.message_id,
+          parse_mode: 'Markdown',
+          reply_markup: keyboard.reply_markup
+        });
+      } catch (editErr) {
+        if (editErr.response?.body?.error_code !== 400) {
+          throw editErr;
+        }
+      }
     }
   } catch (error) {
     console.error('❌ Ошибка callback:', error);
